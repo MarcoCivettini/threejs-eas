@@ -1,6 +1,6 @@
 import {Experience} from "../experience";
 import * as CANNON from 'cannon-es';
-import { Mesh, Raycaster } from "three";
+import { Mesh, Raycaster, Vector3 } from "three";
 // import { SimplifyModifier } from 'three/examples/jsm/modifiers/SimplifyModifier';
 
 

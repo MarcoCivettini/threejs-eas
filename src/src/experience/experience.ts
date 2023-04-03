@@ -1,9 +1,13 @@
-import { Camera, Mesh, Scene } from "three";
+import {  Mesh, PerspectiveCamera, Scene } from "three";
+import Camera from "./camera";
+import Renderer from "./renderer";
 import sources from "./sources";
 import Debug from "./utils/debug";
 import Resources from "./utils/resources";
 import Sizes from "./utils/sizes";
 import Time from "./utils/time";
+import PhysicsWorld from "./world/physics-word";
+import World from "./world/world";
 
 let instance: Experience | null = null;
 
@@ -35,9 +39,9 @@ export class Experience {
         this.scene = new Scene()
         this.resources = new Resources(sources);
         this.camera = new Camera();
-        // this.renderer = new Renderer()
-        // this.world = new World();
-        // this.physicsWold = new PhysicsWorld();
+        this.renderer = new Renderer()
+        this.world = new World();
+        this.physicsWold = new PhysicsWorld();
 
         this.sizes.on('resize', () => {
             this.resize();
@@ -59,15 +63,17 @@ export class Experience {
     }
 
     resize() {
-        this.camera.resize();
-        this.renderer.resize();
+        // this.camera?.resize();
+        this.renderer?.resize();
     }
 
     update() {
-        this.camera.update()
-        this.world.update();
-        this.renderer.update();
-        this.physicsWold.update();
+        if(this.camera){
+            this.camera.update();
+        }
+        this.world?.update();
+        this.renderer?.update();
+        this.physicsWold?.update();
     }
 
     destroy() {
