@@ -1,9 +1,21 @@
 import Experience from "../experience";
 import * as THREE from 'three';
-import { BasicCharacterController } from './../utils/movements';
+import { BasicCharacterController } from '../utils/movements';
 import * as CANNON from 'cannon-es';
 
 export default class Player {
+    experience: Experience;
+    scene: any;
+    resources: any;
+    time: any;
+    debug: any;
+    physicsWord: any;
+    speed: number;
+    rotationSmoothing: number;
+    physicsBody: CANNON.Body;
+    characterController: BasicCharacterController;
+    model: any;
+
     constructor() {
         this.experience = new Experience();
         this.scene = this.experience.scene;
@@ -20,11 +32,10 @@ export default class Player {
         this.characterController = new BasicCharacterController({ model: this.physicsBody, speed: this.speed, rotationSmoothing: this.rotationSmoothing  });
          this.physicsBody.velocity.x   = 1;
         // this.physicsBody.applyImpulse(new CANNON.Vec3(1, 0, 0))
-        this.physicsWord.addBody(this.physicsBody, this.model);
-        
+        this.physicsWord.addBody(this.physicsBody, this.model); 
     }
 
-    createPlayer(dimension) {
+    createPlayer(dimension: any) {
         this.model = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ color: 'darkgreen' }))
         this.model.scale.set(dimension.x, dimension.y, dimension.z);
         this.model.position.y = 5.5;
@@ -46,7 +57,7 @@ export default class Player {
         this.characterController.update();
     }
 
-    createPhysicsBody(mesh) {
+    createPhysicsBody(mesh: any) {
         const {x,y,z} = mesh.scale;
         const shape = new CANNON.Box(new CANNON.Vec3(x/2,y/2,z/2));
         const body = new CANNON.Body({

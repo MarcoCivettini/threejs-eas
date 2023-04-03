@@ -5,6 +5,12 @@ import * as CANNON from 'cannon-es';
 
 
 export default class Floor {
+    Experience: Experience;
+    scene: any;
+    resources: any;
+    physicsWord: any;
+    resource: any;
+    model: any;
     constructor() {
         this.Experience = new Experience();
         this.scene = this.Experience.scene;
@@ -19,7 +25,7 @@ export default class Floor {
         this.model = this.resource.scene;
         this.scene.add(this.model);
 
-        this.model.traverse((child) => {
+        this.model.traverse((child: any) => {
             if (child instanceof THREE.Mesh) {
                 child.castShadow = true
             }
@@ -68,7 +74,7 @@ export default class Floor {
 
     }
 
-    terrainObjectToShape(mesh) {
+    terrainObjectToShape(mesh: any) {
         // console.log(mesh);
         // if(!mesh?.childrend?.length){return;}
         let geometry = null;
@@ -97,8 +103,8 @@ export default class Floor {
         this.scene.add(mesh);
     }
 
-    createShapeFromGeometry(mesh) {
-        const matrix = [];
+    createShapeFromGeometry(mesh: any) {
+        const matrix: number[][] = [];
         const scale = mesh.scale.x;
         const yScale = mesh.scale.y;
         const dimension = scale;
@@ -125,7 +131,7 @@ export default class Floor {
         return terrainShape;
     }
 
-    createShapeFromGeometry1(geometry) {
+    createShapeFromGeometry1(geometry: any) {
                 // const simplifyModifier = new SimplifyModifier();
         // const simplifiedGeometry = simplifyModifier.modify(mesh.geometry, 1);
 

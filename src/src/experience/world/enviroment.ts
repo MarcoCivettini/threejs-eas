@@ -2,6 +2,14 @@ import Experience from "../experience";
 import * as THREE from 'three';
 
 export default class Environment {
+    experience: Experience;
+    scene: any;
+    resources: any;
+    debug: any;
+    debugFolder: any;
+    sunLight: THREE.DirectionalLight;
+    environmentMap: { [key: string]: any } = {};
+
     constructor() {
         this.experience = new Experience();
         this.scene = this.experience.scene;
@@ -12,13 +20,16 @@ export default class Environment {
             this.debugFolder = this.debug.ui.addFolder('enviroment');
         }
 
-        this.setSunLight();
+        // set sunlight
+        this.sunLight = new THREE.DirectionalLight('#ffffff', 4)
+        this.setSunLightOptions();
+
+
         this.setEnviromentMap();
     }
 
 
-    setSunLight() {
-        this.sunLight = new THREE.DirectionalLight('#ffffff', 4)
+    setSunLightOptions() {
         this.sunLight.castShadow = true
         this.sunLight.shadow.camera.far = 15
         this.sunLight.shadow.mapSize.set(1024, 1024)
@@ -27,33 +38,33 @@ export default class Environment {
         this.scene.add(this.sunLight)
 
         // Debug
-        if(this.debug.active){
+        if (this.debug.active) {
             this.debugFolder
-            .add(this.sunLight, 'intensity')
-            .name('sunLightIntensity')
-            .min(0)
-            .max(10)
-            .step(0.001);
+                .add(this.sunLight, 'intensity')
+                .name('sunLightIntensity')
+                .min(0)
+                .max(10)
+                .step(0.001);
 
             this.debugFolder
-            .add(this.sunLight.position, 'x')
-            .name('sunLightX')
-            .min(-5)
-            .max(5)
-            .step(0.001)
+                .add(this.sunLight.position, 'x')
+                .name('sunLightX')
+                .min(-5)
+                .max(5)
+                .step(0.001)
 
             this.debugFolder
-            .add(this.sunLight.position, 'y')
-            .name('sunLightY')
-            .min(-5)
-            .max(5)
-            .step(0.001)
+                .add(this.sunLight.position, 'y')
+                .name('sunLightY')
+                .min(-5)
+                .max(5)
+                .step(0.001)
             this.debugFolder
-            .add(this.sunLight.position, 'z')
-            .name('sunLightZ')
-            .min(-5)
-            .max(5)
-            .step(0.001)
+                .add(this.sunLight.position, 'z')
+                .name('sunLightZ')
+                .min(-5)
+                .max(5)
+                .step(0.001)
         }
     }
 
@@ -66,7 +77,7 @@ export default class Environment {
         this.scene.environment = this.environmentMap.texture
 
         this.environmentMap.updateMaterials = () => {
-            this.scene.traverse((child) => {
+            this.scene.traverse((child: any) => {
                 if (child instanceof THREE.Mesh && child.material instanceof THREE.MeshStandardMaterial) {
                     child.material.envMap = this.environmentMap.texture
                     child.material.envMapIntensity = this.environmentMap.intensity

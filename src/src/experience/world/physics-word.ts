@@ -4,11 +4,17 @@ import CannonDebugger from 'cannon-es-debugger'
 
 
 export default class PhysicsWorld {
+    experience: Experience;
+    time: any;
+    world: CANNON.World;
+    cannonDebugger: any;
+    objectsToUpdate: any[];
     constructor() {
         this.experience = new Experience();
         this.time = this.experience.time;
         this.world = this.createPhysicWorld();
-        this.cannonDebugger = new CannonDebugger(this.experience.scene, this.world);
+        // TODO re-add cannon debugger
+        this.cannonDebugger = CannonDebugger(this.experience.scene, this.world);
         this.addDefaultContactMaterial();
         this.objectsToUpdate = [];
 
@@ -27,7 +33,7 @@ export default class PhysicsWorld {
         this.cannonDebugger.update() 
     }
 
-    addBody(body, mesh) {
+    addBody(body: any, mesh: any) {
         this.world.addBody(body);
         this.objectsToUpdate.push({
             mesh,

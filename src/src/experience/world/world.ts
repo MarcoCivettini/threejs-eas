@@ -8,6 +8,14 @@ import * as THREE from 'three';
 
 
 export default class World {
+    experience: Experience;
+    scene: any;
+    resources: any;
+    floor?: Floor;
+    player?: Player;
+    enviroment?: Environment;
+    thirdPersonCamera?: ThirdPersonCamera;
+    wall?: Wall;
     constructor() {
         this.experience = new Experience()
         this.scene = this.experience.scene;

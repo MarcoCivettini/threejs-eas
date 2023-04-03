@@ -4,9 +4,13 @@ import * as CANNON from 'cannon-es';
 
 
 export default class Wall {
+    experience: Experience;
+    scene: any;
+    physicsWord: any;
+    model: THREE.Mesh<THREE.BoxGeometry, THREE.MeshStandardMaterial>;
 
 
-    constructor(position) {
+    constructor(position: any) {
         this.experience = new Experience();
         this.scene = this.experience.scene;
         this.physicsWord = this.experience.physicsWold;
@@ -18,7 +22,7 @@ export default class Wall {
 
     }
 
-    createWall(dimension, position) {
+    createWall(dimension: any, position: any) {
         const mesh = new THREE.Mesh(
             new THREE.BoxGeometry(1,1,1),
             new THREE.MeshStandardMaterial({ color: '#BBBBBB' })
@@ -33,7 +37,7 @@ export default class Wall {
         return mesh;
     }
 
-    createPhysicsBody(mesh) {
+    createPhysicsBody(mesh: any) {
         const { x, y, z } = mesh.scale;
         const shape = new CANNON.Box(new CANNON.Vec3(x / 2, y / 2, z / 2));
         const body = new CANNON.Body({
