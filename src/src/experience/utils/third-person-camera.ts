@@ -1,19 +1,19 @@
-import * as THREE from 'three';
-import Experience from '../experience';
+import { Vector3 } from 'three';
+import {Experience} from '../experience';
 
 export class ThirdPersonCamera {
     expirience: any;
     time: any;
     model: any;
     camera: any;
-    modelPreviousPosition: THREE.Vector3;
-    currentPosition: THREE.Vector3;
+    modelPreviousPosition: Vector3;
+    currentPosition: Vector3;
     constructor(params: any) {
         this.expirience = new Experience();
         this.time = this.expirience.time;
         this.model = params.model;
         this.camera = params.camera;
-        this.modelPreviousPosition = new THREE.Vector3();
+        this.modelPreviousPosition = new Vector3();
         this.modelPreviousPosition.copy(this.model.position);
 
         this.currentPosition = this.getCameraOffset();
@@ -31,7 +31,7 @@ export class ThirdPersonCamera {
     }
 
     getCameraOffset() {
-        const idealOffset = new THREE.Vector3(0, 5, 13);
+        const idealOffset = new Vector3(0, 5, 13);
         // idealOffset.applyQuaternion(this.model.quaternion);
         idealOffset.add(this.model.position);
         return idealOffset;

@@ -1,5 +1,5 @@
-import * as THREE from 'three';
-import Experience from "./experience";
+import { WebGLRenderer, sRGBEncoding, CineonToneMapping, PCFSoftShadowMap } from "three";
+import {Experience} from "./experience";
 
 
 export default class Renderer {
@@ -8,7 +8,7 @@ export default class Renderer {
     sizes: any;
     scene: any;
     camera: any;
-    instance: THREE.WebGLRenderer;
+    instance: WebGLRenderer;
     constructor() {
 
         this.experience = new Experience()
@@ -18,7 +18,7 @@ export default class Renderer {
         this.camera = this.experience.camera
 
         // create renderer instance
-        this.instance = new THREE.WebGLRenderer({
+        this.instance = new WebGLRenderer({
             canvas: this.canvas,
             antialias: true
         })
@@ -27,11 +27,11 @@ export default class Renderer {
 
     setRendererOptions() {
         this.instance.physicallyCorrectLights = true
-        this.instance.outputEncoding = THREE.sRGBEncoding
-        this.instance.toneMapping = THREE.CineonToneMapping
+        this.instance.outputEncoding = sRGBEncoding
+        this.instance.toneMapping = CineonToneMapping
         this.instance.toneMappingExposure = 1.75
         this.instance.shadowMap.enabled = true
-        this.instance.shadowMap.type = THREE.PCFSoftShadowMap
+        this.instance.shadowMap.type = PCFSoftShadowMap
         this.instance.setClearColor('#211d20');
         this.instance.setSize(this.sizes.width, this.sizes.height)
         this.instance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))

@@ -1,6 +1,6 @@
-import Experience from "../experience";
-import * as THREE from 'three';
+import {Experience} from "../experience";
 import * as CANNON from 'cannon-es';
+import { Mesh, Raycaster } from "three";
 // import { SimplifyModifier } from 'three/examples/jsm/modifiers/SimplifyModifier';
 
 
@@ -26,7 +26,7 @@ export default class Floor {
         this.scene.add(this.model);
 
         this.model.traverse((child: any) => {
-            if (child instanceof THREE.Mesh) {
+            if (child instanceof Mesh) {
                 child.castShadow = true
             }
         })
@@ -113,9 +113,9 @@ export default class Floor {
         for (let x = -dimension; x <= dimension; x++) {
             matrix.push([]);
             for (let z = -dimension; z <= dimension; z++) {
-                const origin = new THREE.Vector3(x / scale, 1, z / scale).applyMatrix4(mesh.matrixWorld);
-                const direction = new THREE.Vector3(0, -1, 0).transformDirection(mesh.matrixWorld);
-                const raycaster = new THREE.Raycaster(origin, direction);
+                const origin = new Vector3(x / scale, 1, z / scale).applyMatrix4(mesh.matrixWorld);
+                const direction = new Vector3(0, -1, 0).transformDirection(mesh.matrixWorld);
+                const raycaster = new Raycaster(origin, direction);
                 const intersects = raycaster.intersectObject(mesh, false);
 
                 if (intersects.length > 0) {

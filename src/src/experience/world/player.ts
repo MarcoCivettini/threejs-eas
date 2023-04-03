@@ -1,7 +1,7 @@
-import Experience from "../experience";
-import * as THREE from 'three';
+import {Experience} from "../experience";
 import { BasicCharacterController } from '../utils/movements';
 import * as CANNON from 'cannon-es';
+import { Vector3, Mesh, BoxGeometry, MeshBasicMaterial } from "three";
 
 export default class Player {
     experience: Experience;
@@ -27,7 +27,7 @@ export default class Player {
         this.speed = 1;
         this.rotationSmoothing = 0.15;
 
-        this.createPlayer(new THREE.Vector3(0.5, 1, 0.5));
+        this.createPlayer(new Vector3(0.5, 1, 0.5));
         this.physicsBody = this.createPhysicsBody(this.model);
         this.characterController = new BasicCharacterController({ model: this.physicsBody, speed: this.speed, rotationSmoothing: this.rotationSmoothing  });
          this.physicsBody.velocity.x   = 1;
@@ -36,7 +36,7 @@ export default class Player {
     }
 
     createPlayer(dimension: any) {
-        this.model = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), new THREE.MeshBasicMaterial({ color: 'darkgreen' }))
+        this.model = new Mesh(new BoxGeometry(1, 1, 1), new MeshBasicMaterial({ color: 'darkgreen' }))
         this.model.scale.set(dimension.x, dimension.y, dimension.z);
         this.model.position.y = 5.5;
         

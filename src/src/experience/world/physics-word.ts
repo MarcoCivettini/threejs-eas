@@ -1,5 +1,5 @@
 import * as CANNON from 'cannon-es';
-import Experience from '../experience';
+import {Experience} from '../experience';
 import CannonDebugger from 'cannon-es-debugger'
 
 

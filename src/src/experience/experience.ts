@@ -1,4 +1,4 @@
-import THREE, { Camera } from "three";
+import { Camera, Mesh, Scene } from "three";
 import sources from "./sources";
 import Debug from "./utils/debug";
 import Resources from "./utils/resources";
@@ -8,7 +8,7 @@ import Time from "./utils/time";
 let instance: Experience | null = null;
 
 // Singelton
-export default class Experience {
+export class Experience {
     canvas?: HTMLElement;
     debug: any;
     sizes: any;
@@ -32,7 +32,7 @@ export default class Experience {
         this.debug = new Debug();
         this.sizes = new Sizes()
         this.time = new Time()
-        this.scene = new THREE.Scene()
+        this.scene = new Scene()
         this.resources = new Resources(sources);
         this.camera = new Camera();
         // this.renderer = new Renderer()
@@ -76,7 +76,7 @@ export default class Experience {
 
         // Travers the whole scene
         this.scene.traverse((child: any) => {
-            if (child instanceof THREE.Mesh) {
+            if (child instanceof Mesh) {
                 child.geometry.dispose();
                 for (const key in child.material) {
                     const value = child.material[key];

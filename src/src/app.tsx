@@ -1,6 +1,6 @@
 import { useEffect } from 'preact/hooks'
 import './app.css'
-import { initThreejsApp, regenerateSword, setFlipAnimation, setSpinAnimation, stopAnimation } from './threejs-app';
+import { initThreejsApp } from './threejs-app';
 
 export function App() {
 
