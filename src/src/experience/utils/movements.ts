@@ -1,6 +1,11 @@
 import * as CANNON from 'cannon-es';
 
 export default class BasicCharacterControllerInput {
+    left: boolean;
+    right: boolean;
+    up: boolean;
+    down: boolean;
+    run: boolean;
     constructor() {
         this.left = false;
         this.right = false;
@@ -12,7 +17,7 @@ export default class BasicCharacterControllerInput {
         window.addEventListener("keyup", (event) => this.keyUp(event.key));
     }
 
-    keyUp(key) {
+    keyUp(key: string) {
         switch (key.toLowerCase()) {
             case 'a': // left arrow
                 this.left = false;
@@ -32,7 +37,7 @@ export default class BasicCharacterControllerInput {
         }
     }
 
-    keyDown(key) {
+    keyDown(key: string) {
         switch (key.toLowerCase()) {
             case 'a': // left arrow
                 this.left = true;
@@ -54,7 +59,12 @@ export default class BasicCharacterControllerInput {
 }
 
 export class BasicCharacterController {
-    constructor(params) {
+    params: any;
+    model: any;
+    speed: any;
+    rotationSmoothing: any;
+    inputState: BasicCharacterControllerInput;
+    constructor(params: any) {
         this.params = params;
         this.model = params.model;
         this.speed = params.speed;

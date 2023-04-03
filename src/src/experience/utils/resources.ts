@@ -4,7 +4,12 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 
 export default class Resources extends EventEmitter {
-    constructor(sources) {
+    sources: any;
+    items: {[key: string]: any} = {};
+    toLoad: any;
+    loaded: number;
+    loaders: {[key: string]: any} = {};
+    constructor(sources: any) {
         super();
 
         // Options
@@ -39,32 +44,32 @@ export default class Resources extends EventEmitter {
         }
     }
 
-    loadByGltf(source) {
+    loadByGltf(source: any) {
         this.loaders.gltfLoader.load(
             source.path,
-            (file) => {
+            (file: any) => {
                 this.sourceLoaded(source, file);
             }
         )
     }
-    loadByTexture(source) {
+    loadByTexture(source: any) {
         this.loaders.textureLoader.load(
             source.path,
-            (file) => {
+            (file: any) => {
                 this.sourceLoaded(source, file);
             }
         )
     }
-    loadByCubeTexture(source) {
+    loadByCubeTexture(source: any) {
         this.loaders.cubeTextureLoader.load(
             source.path,
-            (file) => {
+            (file: any) => {
                 this.sourceLoaded(source, file);
             }
         )
     }
 
-    sourceLoaded(source, file) {
+    sourceLoaded(source: any, file: any) {
         this.items[source.name] = file;
         this.loaded++;
         if (this.loaded === this.toLoad) {

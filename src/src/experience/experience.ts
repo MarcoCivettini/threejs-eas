@@ -1,10 +1,10 @@
 let instance: any = null;
 
 // Singelton
-export class Experience {
+export default class Experience {
     canvas?: HTMLElement;
 
-    constructor(canvas: HTMLElement) {
+    constructor(canvas?: HTMLElement) {
         if (instance) {
             return instance
         }

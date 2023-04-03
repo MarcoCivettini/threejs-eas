@@ -2,7 +2,13 @@ import * as THREE from 'three';
 import Experience from '../experience';
 
 export class ThirdPersonCamera {
-    constructor(params) {
+    expirience: any;
+    time: any;
+    model: any;
+    camera: any;
+    modelPreviousPosition: THREE.Vector3;
+    currentPosition: THREE.Vector3;
+    constructor(params: any) {
         this.expirience = new Experience();
         this.time = this.expirience.time;
         this.model = params.model;
