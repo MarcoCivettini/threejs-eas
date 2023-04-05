@@ -1,3 +1,4 @@
+import { SwordGenerator } from './sword-generator';
 import { Vector3 } from "three";
 import {Experience} from "../experience";
 import { ThirdPersonCamera } from "../utils/third-person-camera";
@@ -29,6 +30,12 @@ export default class World {
             this.thirdPersonCamera = new ThirdPersonCamera({ model: this.player.model, camera: this.experience.camera });
             this.wall = new Wall(new Vector3(-2, 0.5, -2));
             this.wall = new Wall(new Vector3(2, 0.5, 2));
+
+            const swordGenerator = new SwordGenerator();
+            const sword = swordGenerator.getSword();
+
+            sword.scale.set(0.05,0.05,0.05);
+            this.player.attachWeapon(sword);
         })
     }
 

@@ -13,8 +13,8 @@ export default class PhysicsWorld {
         this.experience = new Experience();
         this.time = this.experience.time;
         this.world = this.createPhysicWorld();
-        // TODO re-add cannon debugger
-        this.cannonDebugger = CannonDebugger(this.experience.scene, this.world);
+
+        // this.cannonDebugger = CannonDebugger(this.experience.scene, this.world);
         this.addDefaultContactMaterial();
         this.objectsToUpdate = [];
 
@@ -30,7 +30,7 @@ export default class PhysicsWorld {
 
         this.world.step(1 / 60, this.time.delta, 3);
 
-        this.cannonDebugger.update() 
+        // this.cannonDebugger.update() 
     }
 
     addBody(body: any, mesh: any) {

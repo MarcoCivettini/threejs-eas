@@ -1,7 +1,7 @@
 import {Experience} from "../experience";
 import { BasicCharacterController } from '../utils/movements';
 import * as CANNON from 'cannon-es';
-import { Vector3, Mesh, BoxGeometry, MeshBasicMaterial } from "three";
+import { Vector3, Mesh, BoxGeometry, MeshBasicMaterial, Group } from "three";
 
 export default class Player {
     experience: Experience;
@@ -14,7 +14,7 @@ export default class Player {
     rotationSmoothing: number;
     physicsBody: CANNON.Body;
     characterController: BasicCharacterController;
-    model: any;
+    model?: Mesh;
 
     constructor() {
         this.experience = new Experience();
@@ -67,6 +67,12 @@ export default class Player {
         })
         body.position.copy(mesh.position);
         return body;
+    }
+
+    attachWeapon(weapon: Group): void{
+        weapon.position.x = 0.75;
+        weapon.rotateY(Math.PI / 2);
+        this.model?.add(weapon);
     }
 
 
