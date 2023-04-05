@@ -1,4 +1,4 @@
-import {Experience} from "./experience";
+import { Experience } from "./experience";
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import { PerspectiveCamera } from "three";
 
@@ -31,7 +31,7 @@ export default class Camera {
     //     this.scene.add(this.instance)
     // }
 
-    setOrbitControls() {
+    private setOrbitControls() {
         this.controls = new OrbitControls(this.instance, this.canvas)
         this.controls.enableDamping = true
     }
@@ -41,8 +41,10 @@ export default class Camera {
         this.instance.updateProjectionMatrix()
     }
 
-    update(){
-        // this.controls.update()
+    update() {
+        // if (this.controls) {
+        //     this.controls.update()
+        // }
     }
 
 }

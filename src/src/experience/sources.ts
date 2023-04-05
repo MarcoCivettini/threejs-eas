@@ -11,11 +11,16 @@ export default[
             '/textures/environmentMap/nz.jpg',
         ]
     },
-    // {
-    //     name: 'grassColorTexture',
-    //     type: 'texture',
-    //     path: '/textures/dirt/color.jpg'
-    // },
+    {
+        name: 'grassColorTexture',
+        type: 'texture',
+        path: '/textures/color.jpg'
+    },
+    {
+        name: 'steelColorTexture',
+        type: 'texture',
+        path: '/textures/steel.jpeg'
+    },
     // {
     //     name: 'grassNormalTexture',
     //     type: 'texture',

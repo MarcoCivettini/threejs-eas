@@ -1,10 +1,12 @@
-import { CylinderGeometry, ExtrudeGeometry, Group, Mesh, MeshBasicMaterial, Shape } from 'three';
+import { CylinderGeometry, ExtrudeGeometry, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial, Shape } from 'three';
 import { Experience } from './../experience';
 export class SwordGenerator {
     private experience: Experience;
+    private resources: any;
 
     constructor(params?: any) {
         this.experience = new Experience();
+        this.resources = this.experience.resources;
     }
 
     getSword(): Group {
@@ -51,7 +53,7 @@ export class SwordGenerator {
         const r2 = radius - Math.random() * 0.05;
 
         const geometry = new CylinderGeometry(r1, r2, height, 10, 1, false);
-        const material = new MeshBasicMaterial({ color: 0x00ff00 });
+        const material = new MeshBasicMaterial({ color: '#000000' });
         return new Mesh(geometry, material);
     }
 
@@ -77,8 +79,10 @@ export class SwordGenerator {
             bevelEnabled: false
         };
 
+        const guardColor = this.resources.items.grassColorTexture
+
         const geometry = new ExtrudeGeometry(shape, extrudeSettings);
-        const material = new MeshBasicMaterial({ color: 0xff0000 });
+        const material = new MeshStandardMaterial({ map: guardColor });
         const guard = new Mesh(geometry, material);
 
         // N.B. center to origin after the extrusion
@@ -112,8 +116,13 @@ export class SwordGenerator {
             bevelEnabled: false
         };
 
+        const textureColor = this.resources.items.steelColorTexture
+
         const geometry = new ExtrudeGeometry(shape, extrudeSettings);
-        const material = new MeshBasicMaterial({ color: 0x0000ff });
+        const material = new MeshStandardMaterial({
+            map: textureColor,
+            roughness: 0.1
+        });
         const blade = new Mesh(geometry, material);
 
         // N.B. center to origin after the extrusion
