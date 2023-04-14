@@ -1,5 +1,5 @@
 import * as CANNON from 'cannon-es';
-import {Experience} from '../experience';
+import { Experience } from '../experience';
 import CannonDebugger from 'cannon-es-debugger'
 
 
@@ -30,7 +30,7 @@ export default class PhysicsWorld {
 
         this.world.step(1 / 60, this.time.delta, 3);
 
-        // this.cannonDebugger.update() 
+        //  this.cannonDebugger.update()
     }
 
     addBody(body: any, mesh: any) {
@@ -56,7 +56,7 @@ export default class PhysicsWorld {
             defaultMaterial,
             defaultMaterial,
             {
-                friction: 0.001,
+                friction: 0,
                 restitution: 0
             }
         )

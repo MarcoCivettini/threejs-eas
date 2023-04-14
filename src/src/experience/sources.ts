@@ -21,6 +21,11 @@ export default[
         type: 'texture',
         path: '/textures/steel.jpeg'
     },
+    {
+        name: 'testTexture',
+        type: 'texture',
+        path: '/textures/test.jpeg'
+    },
     // {
     //     name: 'grassNormalTexture',
     //     type: 'texture',
