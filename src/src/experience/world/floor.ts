@@ -5,17 +5,17 @@ import { Mesh, Raycaster, Vector3 } from "three";
 
 
 export default class Floor {
-    Experience: Experience;
+    experience: Experience;
     scene: any;
     resources: any;
     physicsWord: any;
     resource: any;
     model: any;
     constructor() {
-        this.Experience = new Experience();
-        this.scene = this.Experience.scene;
-        this.resources = this.Experience.resources;
-        this.physicsWord = this.Experience.physicsWold;
+        this.experience = new Experience();
+        this.scene = this.experience.scene;
+        this.resources = this.experience.resources;
+        this.physicsWord = this.experience.physicsWold;
 
         this.resource = this.resources.items.floorModel;
         this.setModel();

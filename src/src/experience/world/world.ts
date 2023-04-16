@@ -6,6 +6,7 @@ import Environment from "./enviroment";
 import Floor from "./floor";
 import Player from './player';
 import Wall from './wall';
+import { Puppet } from './puppet';
 
 export default class World {
     experience: Experience;
@@ -30,6 +31,7 @@ export default class World {
             this.thirdPersonCamera = new ThirdPersonCamera({ model: this.player.model, camera: this.experience.camera });
             this.wall = new Wall(new Vector3(-2, 0.5, -2));
             this.wall = new Wall(new Vector3(2, 0.5, 2));
+            const puppet = new Puppet(new Vector3(0, -3, 2));
 
             const swordGenerator = new SwordGenerator();
             const sword = swordGenerator.getSword();

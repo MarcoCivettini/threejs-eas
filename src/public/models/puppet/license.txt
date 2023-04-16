@@ -1,0 +1,11 @@
+Model Information:
+* title:	Scarecrow
+* source:	https://sketchfab.com/3d-models/scarecrow-dd66376c24f246f28b10a67f047b8d6a
+* author:	Baardus (https://sketchfab.com/baardus)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Scarecrow" (https://sketchfab.com/3d-models/scarecrow-dd66376c24f246f28b10a67f047b8d6a) by Baardus (https://sketchfab.com/baardus) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

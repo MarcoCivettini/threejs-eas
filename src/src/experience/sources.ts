@@ -36,4 +36,9 @@ export default[
         type: 'gltfModel',
         path: '/models/MapTutorial.glb'
     },
+    {
+        name: 'puppetModel',
+        type: 'gltfModel',
+        path: '/models/puppet/scene.gltf'
+    },
 ]

@@ -40,6 +40,7 @@ export default class Player {
         this.model = new Mesh(new BoxGeometry(1, 1, 1), new MeshStandardMaterial({ map: textures.color, }))
         this.model.scale.set(dimension.x, dimension.y, dimension.z);
         this.model.position.y = 5.5;
+        this.model.position.z = 6;
 
         this.model.castShadow = true;
 
