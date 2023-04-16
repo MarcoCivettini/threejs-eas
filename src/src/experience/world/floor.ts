@@ -35,15 +35,15 @@ export default class Floor {
 
     createPhysicsWorld() {
 
-        const mesh = this.model.children[0];
+        const mesh: Mesh = this.model.children[0];
+        mesh.receiveShadow = true;
         console.log('mesh', this.model);
         // const terrainShape = new CANNON.Trimesh.createMeshShape(this.model.children[0].geometry);
 
         // const simplifyModifier = new SimplifyModifier();
         // const simplifiedGeometry = simplifyModifier.modify(mesh.geometry, 1);
-        console.log(mesh.geometry.index.array.length);
+        // console.log(mesh?.geometry?.index?.array.length);
         const shape = this.createShapeFromGeometry(mesh);
-        
         // this.createShapeFromGeometry1(this.model.children[2]);
         // for(let i = 1; i < this.model.children.length; i++){
         //     this.terrainObjectToShape(this.model.children[i]);

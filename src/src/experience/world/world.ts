@@ -37,7 +37,7 @@ export default class World {
             const sword = swordGenerator.getSword();
 
             sword.scale.set(0.05,0.05,0.05);
-            this.player.attachWeapon(sword);
+            // this.player.attachWeapon(sword);
         })
     }
 

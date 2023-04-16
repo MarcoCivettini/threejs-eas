@@ -1,12 +1,13 @@
-import { Experience } from "../experience";
+import { Experience } from '../experience';
 import { BasicCharacterController } from '../utils/movements';
 import * as CANNON from 'cannon-es';
-import { Vector3, Mesh, BoxGeometry, MeshBasicMaterial, Group, MeshStandardMaterial, sRGBEncoding, RepeatWrapping } from "three";
+import { Vector3, Mesh, Group, sRGBEncoding, RepeatWrapping, AnimationMixer } from 'three';
 
 export default class Player {
     experience: Experience;
     scene: any;
     resources: any;
+    playerResource: any;
     time: any;
     debug: any;
     physicsWord: any;
@@ -14,12 +15,14 @@ export default class Player {
     rotationSmoothing: number;
     physicsBody: CANNON.Body;
     characterController: BasicCharacterController;
-    model?: Mesh;
+    model: Mesh;
+    animation: any;
 
     constructor() {
         this.experience = new Experience();
         this.scene = this.experience.scene;
         this.resources = this.experience.resources;
+        this.playerResource = this.resources.items.playerModel;
         this.time = this.experience.time;
         this.debug = this.experience.debug;
         this.physicsWord = this.experience.physicsWold;
@@ -27,84 +30,112 @@ export default class Player {
         this.speed = 1;
         this.rotationSmoothing = 0.05;
 
-        this.createPlayer(new Vector3(0.5, 1, 0.5));
+        // this.model = this.createPlayer(new Vector3(0.5, 1, 0.5));
+        this.model = this.createPlayer(new Vector3(0.2, 0.2, 0.2));
         this.physicsBody = this.createPhysicsBody(this.model);
         this.characterController = new BasicCharacterController({ model: this.physicsBody, speed: this.speed, rotationSmoothing: this.rotationSmoothing });
         this.physicsBody.velocity.x = 1;
-        // this.physicsBody.applyImpulse(new CANNON.Vec3(1, 0, 0))
-        this.physicsWord.addBody(this.physicsBody, this.model);
-    }
-
-    createPlayer(dimension: any) {
-        const textures = this.createTexture();
-        this.model = new Mesh(new BoxGeometry(1, 1, 1), new MeshStandardMaterial({ map: textures.color, }))
-        this.model.scale.set(dimension.x, dimension.y, dimension.z);
-        this.model.position.y = 5.5;
-        this.model.position.z = 6;
-
-        this.model.castShadow = true;
-
-
-        // TEST
-        // this.model.position.z = -2;
-        // this.model.position.x = -2;
-
         this.scene.add(this.model);
 
+        this.physicsWord.addBody(this.physicsBody, this.model);
+        this.animation = this.setAnimation();
+
+        // setTimeout(() => {
+        //     this.playAnimation('')
+        // }, 5000)
     }
 
-
-    update() {
-        // this.physicsBody.velocity.x = -0.3;
-        // this.physicsBody.velocity.z = -0.3;
-
-        // this.physicsBody?.velocity.copy( new CANNON.Vec3() );
-        // this.physicsBody?.quaternion.set(0, 0, 0, 0);
-        // this.physicsBody?.inertia.set( 0, 0, 0 );
-        // this.physicsBody?.invInertia.set( 0, 0, 0 );
-
+    update(): void {
+        this.animation.mixer.update(this.time.delta * 0.001);
         this.characterController.update();
     }
 
-    createPhysicsBody(mesh: any) {
-        const { x, y, z } = mesh.scale;
-        // const shape = new CANNON.Box(new CANNON.Vec3(x/2,y/2,z/2));
-        // const body = new CANNON.Body({
-        //     mass: 20,
-        //     shape,
-        //     // material: this.physicsWord.world.defaultMaterial
-        // })
+    private createPlayer(dimension: any): Mesh {
+        // const textures = this.createTexture();
+        // const model = new Mesh(new BoxGeometry(1, 1, 1), new MeshStandardMaterial({ map: textures.color, }))
+        const model = this.playerResource.scene;
+        model?.scale.set(dimension.x, dimension.y, dimension.z);
+        model.position.y = 5.5;
+        model.position.z = 6;
 
+        model.traverse((child: any) => {
+            if (child instanceof Mesh) {
+                child.castShadow = true
+            }
+        })
+
+        return model;
+    }
+
+    private createPhysicsBody(mesh: Mesh): CANNON.Body {
         var shape = new CANNON.Sphere(0.5);
         const body = new CANNON.Body({
             mass: 50,
             shape,
             material: this.physicsWord.world.defaultContactMaterial
         });
-        body.position.copy(mesh.position);
+        body.position.copy(mesh.position as any);
         return body;
     }
 
-    attachWeapon(weapon: Group): void {
+    private attachWeapon(weapon: Group): void {
         weapon.position.x = 0.75;
         weapon.rotateY(Math.PI / 2);
         this.model?.add(weapon);
     }
 
-    private createTexture() {
-        const textures: any = {};
-        textures.color = this.resources.items.testTexture
-        textures.color.encoding = sRGBEncoding
-        textures.color.repeat.set(0.5, 1)
-        textures.color.wrapS = RepeatWrapping
-        textures.color.wrapT = RepeatWrapping
+    setAnimation(): any {
+        console.log(this.playerResource.animations);
+        const animation: any = {};
+        animation.mixer = new AnimationMixer(this.model);
+        animation.actions = {}
+        animation.actions.attack1 = animation.mixer.clipAction(this.playerResource.animations[0]);
+        animation.actions.attack2 = animation.mixer.clipAction(this.playerResource.animations[1]);
+        animation.actions.spin = animation.mixer.clipAction(this.playerResource.animations[2]);
+        animation.actions.spin1 = animation.mixer.clipAction(this.playerResource.animations[3]);
 
-        return textures;
-        // textures.normal = this.resources.items.grassNormalTexture
-        // textures.normal.repeat.set(1.5, 1.5)
-        // textures.normal.wrapS = RepeatWrapping
-        // textures.normal.wrapT = RepeatWrapping
+        animation.actions.current = animation.actions.attack1;
+        animation.actions.current.play();
 
+
+        animation.play = (name: string) => {
+            const newAction = animation.actions[name];
+            const oldAction = animation.actions.current;
+            newAction.reset();
+            newAction.play();
+            newAction.crossFadeFrom(oldAction, 0.1);
+            animation.actions.current = newAction;
+        }
+
+        animation.stop = () => {
+            animation.actions.current.stop();
+        }
+
+        // if (this.debug.active) {
+        //     const debugObject = {
+        //         playIdle: () => { animation.play('idle') },
+        //         playRunning: () => { animation.play('run') },
+        //         playWalking: () => { animation.play('walk') }
+        //     }
+        //     this.debugFolder.add(debugObject, 'playIdle');
+        //     this.debugFolder.add(debugObject, 'playRunning');
+        //     this.debugFolder.add(debugObject, 'playWalking');
+        // }
+        return animation;
+    }
+
+    
+    
+    playAnimation(actionName: string) {
+        if(!actionName){
+            console.log('resetg');
+            this.animation.stop();
+        }
+        const newAction = this.animation.actions[actionName];
+        const oldAction = this.animation.actions.current;
+        if (newAction !== oldAction) {
+            this.animation.play(actionName)
+        }
     }
 
 
