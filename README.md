@@ -28,3 +28,7 @@ npm install
 ```sh
 npm run dev
 ```
+
+
+GAME IMAGE
+![game-image](./docs/game1.png)
