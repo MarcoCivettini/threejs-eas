@@ -39,10 +39,6 @@ export default class Player {
 
         this.physicsWord.addBody(this.physicsBody, this.model);
         this.animation = this.setAnimation();
-
-        // setTimeout(() => {
-        //     this.playAnimation('')
-        // }, 5000)
     }
 
     update(): void {
@@ -78,13 +74,19 @@ export default class Player {
         return body;
     }
 
-    private attachWeapon(weapon: Group): void {
-        weapon.position.x = 0.75;
+    attachWeapon(weapon: Group): void {
+        // TODO improve this correct bone research
+        const bone = this.model.children[0].children[0].children[0].children[0];
+        // clear bone from existing items from mesh
+        bone.remove(bone.children[1]);
+        bone.remove(bone.children[0]);
+
+        // weapon.position.x = 0.75;
         weapon.rotateY(Math.PI / 2);
-        this.model?.add(weapon);
+        bone.add(weapon)
     }
 
-    setAnimation(): any {
+    private setAnimation(): any {
         console.log(this.playerResource.animations);
         const animation: any = {};
         animation.mixer = new AnimationMixer(this.model);
