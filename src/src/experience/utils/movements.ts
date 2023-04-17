@@ -110,7 +110,7 @@ export class BasicCharacterController {
                 // if(this.inputState.up){
                 //     const torque = new CANNON.Vec3(0, 0, Math.PI)
                 //     this.model.applyTorque(torque);
-                    
+
                 //     // this.model.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), 0);
                 // }
                 // if(this.inputState.left){
@@ -120,7 +120,7 @@ export class BasicCharacterController {
                 //     this.model.applyTorque(torque);
                 //     }
 
-                    // this.model.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI/ 2);
+                // this.model.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI/ 2);
                 // }
                 // if(this.inputState.down){
                 //     this.model.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), Math.PI);
@@ -131,13 +131,13 @@ export class BasicCharacterController {
 
                 // this.model.velocity.x += xSpeed;
                 // this.model.velocity.z += zSpeed;
-            var angleDiff = targetAngle - this.model.quaternion.y;
-            angleDiff = (angleDiff + Math.PI) % (2 * Math.PI) - Math.PI;
+                var angleDiff = targetAngle - this.model.quaternion.y;
+                angleDiff = (angleDiff + Math.PI) % (2 * Math.PI) - Math.PI;
 
-                this.model.quaternion.setFromAxisAngle(new CANNON.Vec3(0,1,0), targetAngle);
-            //     this.model.applyForce()
-            // //   this.model.rotation.y += angleDiff * this.rotationSmoothing;
-         }
+                this.model.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), targetAngle);
+                //     this.model.applyForce()
+                // //   this.model.rotation.y += angleDiff * this.rotationSmoothing;
+            }
 
 
         } else {

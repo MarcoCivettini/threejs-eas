@@ -27,8 +27,8 @@ export class SwordGenerator {
         const bladeHeight = this.getRndInteger(idealSwordHeight - handleHeight, 20);
         const bladeDepth = 0.1 + 0.05 * Math.random();
 
-        console.log("primitives ideal", { idealSwordWidth, idealSwordHeight, idealSwordDepth });
-        console.log("primitives effective", { handleHeight, guardDepth });
+        // console.log("primitives ideal", { idealSwordWidth, idealSwordHeight, idealSwordDepth });
+        // console.log("primitives effective", { handleHeight, guardDepth });
 
         // meshes
         const handle = this.getHandle(handleRadius, handleHeight);
@@ -47,7 +47,7 @@ export class SwordGenerator {
     }
 
     private getHandle(radius: number, height: number): Mesh {
-        console.info("handle", { radius, height })
+        // console.info("handle", { radius, height })
 
         const r1 = radius;
         const r2 = radius - Math.random() * 0.05;
@@ -58,7 +58,7 @@ export class SwordGenerator {
     }
 
     private getGuard(width: number, height: number, depth: number): Mesh {
-        console.info("guard", { width, height, depth })
+        // console.info("guard", { width, height, depth })
 
         const halfWidth = width / 2;
         const shape = new Shape();
@@ -92,7 +92,7 @@ export class SwordGenerator {
     }
 
     private getBlade(width: number, height: number, depth: number, pointy: boolean): Mesh {
-        console.info("blade", { width, height, depth, pointy })
+        // console.info("blade", { width, height, depth, pointy })
 
         const halfWidth = width / 2;
         const shape = new Shape();

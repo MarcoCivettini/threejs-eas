@@ -20,7 +20,7 @@ export class Puppet{
 
         // this.model = this.createWall(new Vector3(2, 1 , 1), position);
         this.model = this.resources.items.puppetModel.scene;
-        console.log('model', this.model)
+        // console.log('model', this.model)
          this.model.scale.set(0.02,0.02,0.02);
         this.model.position.copy(position);
         this.scene.add(this.model);

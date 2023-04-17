@@ -1,4 +1,4 @@
-import { Raycaster } from 'three';
+import { Quaternion, Raycaster } from 'three';
 import { Experience } from '../experience';
 import { BasicCharacterController } from '../utils/movements';
 import * as CANNON from 'cannon-es';
@@ -18,7 +18,7 @@ export default class Player {
     characterController: BasicCharacterController;
     model: Mesh;
     animation: any;
-    raycaster: Raycaster;
+    // raycaster: Raycaster;
 
     constructor() {
         this.experience = new Experience();
@@ -49,9 +49,6 @@ export default class Player {
     update(): void {
         this.animation.mixer.update(this.time.delta * 0.001);
         this.characterController.update();
-
-
-
     }
 
     private createPlayer(dimension: any): Mesh {
@@ -72,7 +69,7 @@ export default class Player {
     }
 
     private createPhysicsBody(mesh: Mesh): CANNON.Body {
-        var shape = new CANNON.Sphere(0.5);
+        const shape = new CANNON.Sphere(0.5);
         const body = new CANNON.Body({
             mass: 50,
             shape,
@@ -134,10 +131,10 @@ export default class Player {
         return animation;
     }
 
-    
-    
+
+
     playAnimation(actionName: string) {
-        if(!actionName){
+        if (!actionName) {
             console.log('resetg');
             this.animation.stop();
         }

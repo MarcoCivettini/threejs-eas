@@ -37,7 +37,7 @@ export default class Floor {
 
         const mesh: Mesh = this.model.children[0];
         mesh.receiveShadow = true;
-        console.log('mesh', this.model);
+        // console.log('mesh', this.model);
         // const terrainShape = new CANNON.Trimesh.createMeshShape(this.model.children[0].geometry);
 
         // const simplifyModifier = new SimplifyModifier();
