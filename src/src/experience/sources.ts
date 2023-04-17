@@ -39,7 +39,7 @@ export default[
     {
         name: 'playerModel',
         type: 'gltfModel',
-        path: '/models/Playerv2.glb'
+        path: '/models/Playerv3.glb'
     },
     {
         name: 'puppetModel',

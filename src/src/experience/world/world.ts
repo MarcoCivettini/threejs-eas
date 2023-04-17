@@ -1,5 +1,5 @@
 import { SwordGenerator } from './sword-generator';
-import { Vector3 } from "three";
+import { Raycaster, Vector3 } from "three";
 import {Experience} from "../experience";
 import { ThirdPersonCamera } from "../utils/third-person-camera";
 import Environment from "./enviroment";
@@ -39,6 +39,8 @@ export default class World {
             const weaponScale = 0.16;
             sword.scale.set(weaponScale,weaponScale,weaponScale);
             this.player.attachWeapon(sword);
+
+
         })
     }
 

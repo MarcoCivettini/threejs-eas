@@ -1,3 +1,4 @@
+import { Raycaster } from 'three';
 import { Experience } from '../experience';
 import { BasicCharacterController } from '../utils/movements';
 import * as CANNON from 'cannon-es';
@@ -17,6 +18,7 @@ export default class Player {
     characterController: BasicCharacterController;
     model: Mesh;
     animation: any;
+    raycaster: Raycaster;
 
     constructor() {
         this.experience = new Experience();
@@ -39,11 +41,17 @@ export default class Player {
 
         this.physicsWord.addBody(this.physicsBody, this.model);
         this.animation = this.setAnimation();
+        // this.raycaster =   new Raycaster(new Vector3(0, -3, -2), new Vector3(0,0,1));
+        // const intersects = this.raycaster.intersectObjects( this.scene.children );
+        // console.log('intersects', intersects)
     }
 
     update(): void {
         this.animation.mixer.update(this.time.delta * 0.001);
         this.characterController.update();
+
+
+
     }
 
     private createPlayer(dimension: any): Mesh {
@@ -83,6 +91,7 @@ export default class Player {
 
         // weapon.position.x = 0.75;
         weapon.rotateY(Math.PI / 2);
+
         bone.add(weapon)
     }
 
@@ -94,7 +103,6 @@ export default class Player {
         animation.actions.attack1 = animation.mixer.clipAction(this.playerResource.animations[0]);
         animation.actions.attack2 = animation.mixer.clipAction(this.playerResource.animations[1]);
         animation.actions.spin = animation.mixer.clipAction(this.playerResource.animations[2]);
-        animation.actions.spin1 = animation.mixer.clipAction(this.playerResource.animations[3]);
 
         animation.actions.current = animation.actions.attack1;
         animation.actions.current.play();
