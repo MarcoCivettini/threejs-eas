@@ -7,7 +7,7 @@ import Resources from "./utils/resources";
 import Sizes from "./utils/sizes";
 import Time from "./utils/time";
 import PhysicsWorld from "./world/physics-word";
-import World from "./world/world";
+import World from "./world/debug/world";
 
 let instance: Experience | null = null;
 
@@ -40,7 +40,9 @@ export class Experience {
         this.resources = new Resources(sources);
         this.camera = new Camera();
         this.renderer = new Renderer()
-        this.world = new World();
+
+        // TODO dynamically receive world id
+        this.world = new World();        
         this.physicsWold = new PhysicsWorld();
 
         this.sizes.on('resize', () => {

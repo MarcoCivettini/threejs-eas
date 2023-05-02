@@ -56,8 +56,9 @@ export default class Player {
         // const model = new Mesh(new BoxGeometry(1, 1, 1), new MeshStandardMaterial({ map: textures.color, }))
         const model = this.playerResource.scene;
         model?.scale.set(dimension.x, dimension.y, dimension.z);
-        model.position.y = 5.5;
-        model.position.z = 6;
+        // model.position.y = 5.5;
+        // model.position.z = 6;
+        model.position.y = .5;
 
         model.traverse((child: any) => {
             if (child instanceof Mesh) {
