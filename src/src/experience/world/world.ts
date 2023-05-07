@@ -29,9 +29,9 @@ export default class World {
             this.player = new Player();
             this.enviroment = new Environment();
             this.thirdPersonCamera = new ThirdPersonCamera({ model: this.player.model, camera: this.experience.camera });
-            this.wall = new Wall(new Vector3(-2, 0.5, -2));
-            this.wall = new Wall(new Vector3(2, 0.5, 2));
-            const puppet = new Puppet(new Vector3(0, -3, 2));
+            new Wall(new Vector3(-2, 0.5, -2));
+            new Wall(new Vector3(2, 0.5, 2));
+            new Puppet(new Vector3(0, -3, 2));
 
             const swordGenerator = new SwordGenerator();
             const sword = swordGenerator.getSword();
