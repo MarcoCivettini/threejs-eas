@@ -34,6 +34,11 @@ export default class Player {
 
         // this.model = this.createPlayer(new Vector3(0.5, 1, 0.5));
         this.model = this.createPlayer(new Vector3(0.2, 0.2, 0.2));
+        
+        // N.B. quickfix for the player / physics spacing
+        const armature = this.model.children[0];
+        armature.position.y -= 1.5;
+        
         this.physicsBody = this.createPhysicsBody(this.model);
         this.characterController = new BasicCharacterController({ model: this.physicsBody, speed: this.speed, rotationSmoothing: this.rotationSmoothing });
         this.physicsBody.velocity.x = 1;
