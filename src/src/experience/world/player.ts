@@ -50,9 +50,6 @@ export default class Player {
         this.animation = this.setAnimation();
 
         EventHandler.register('attack').subscribe(() => this.attackAction())
-        // this.raycaster =   new Raycaster(new Vector3(0, -3, -2), new Vector3(0,0,1));
-        // const intersects = this.raycaster.intersectObjects( this.scene.children );
-        // console.log('intersects', intersects)
     }
 
     update(): void {
