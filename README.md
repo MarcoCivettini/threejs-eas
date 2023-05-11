@@ -31,4 +31,4 @@ npm run dev
 
 
 GAME IMAGE
-![game-image](./docs/game1.png)
+![game-image](./docs/game.png)
