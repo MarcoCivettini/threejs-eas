@@ -10,11 +10,13 @@ export default class BasicCharacterControllerInput {
     down = false;
     run = false;
     constructor() {
-        window.addEventListener("keydown", (event) => this.keyDown(event.key));
-        window.addEventListener("keyup", (event) => this.keyUp(event.key));
+        window.addEventListener("keydown", (e) => this.keyDown(e));
+        window.addEventListener("keyup", (e) => this.keyUp(e));
     }
 
-    keyUp(key: string) {
+    keyUp(event: KeyboardEvent) {
+        event.preventDefault();
+        const key = event.key;
         switch (key.toLowerCase()) {
             case 'a': // left arrow
                 this.left = false;
@@ -34,7 +36,9 @@ export default class BasicCharacterControllerInput {
         }
     }
 
-    keyDown(key: string) {
+    keyDown(event: KeyboardEvent) {
+        event.preventDefault();
+        const key = event.key;
         switch (key.toLowerCase()) {
             case 'a': // left arrow
                 this.left = true;
