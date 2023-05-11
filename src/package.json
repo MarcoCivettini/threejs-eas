@@ -13,6 +13,7 @@
     "cannon-es-debugger": "^1.0.0",
     "lil-gui": "^0.18.1",
     "preact": "^10.11.3",
+    "rxjs": "^7.8.1",
     "three": "^0.149.0"
   },
   "devDependencies": {

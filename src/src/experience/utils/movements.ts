@@ -1,19 +1,15 @@
 import * as CANNON from 'cannon-es';
-import { Euler, Quaternion, Vector3 } from 'three';
+import { MathUtils, Quaternion, Vector3 } from 'three';
+import { EventHandler } from './event-handler';
+import { getAngleDegreesFromAnotherAngle } from './angle';
 
 export default class BasicCharacterControllerInput {
-    left: boolean;
-    right: boolean;
-    up: boolean;
-    down: boolean;
-    run: boolean;
+    left = false;
+    right = false;
+    up = false;
+    down = false;
+    run = false;
     constructor() {
-        this.left = false;
-        this.right = false;
-        this.up = false;
-        this.down = false;
-        this.run = false;
-
         window.addEventListener("keydown", (event) => this.keyDown(event.key));
         window.addEventListener("keyup", (event) => this.keyUp(event.key));
     }
@@ -55,6 +51,9 @@ export default class BasicCharacterControllerInput {
             case 'shift':
                 this.run = true;
                 break;
+            case ' ':
+                EventHandler.emit('attack');
+                break;
         }
     }
 }
@@ -77,8 +76,6 @@ export class BasicCharacterController {
         this.moveFromKeyboard();
     }
 
-
-
     private moveFromKeyboard(): void {
         let xSpeed = 0;
         let zSpeed = 0;
@@ -94,7 +91,10 @@ export class BasicCharacterController {
             if (this.inputState.down) zSpeed += this.speed; // Down arrow
 
             if (xSpeed || zSpeed) {
-                const targetAngle = Math.atan2(-xSpeed, -zSpeed);
+                // const targetAngleDeg = this.getAngleDegrees(xSpeed, -zSpeed);
+                const targetAngleDeg = getAngleDegreesFromAnotherAngle(0, 1, xSpeed, -zSpeed);
+                const targetAngleRad = MathUtils.degToRad(targetAngleDeg);
+
                 if (this.model.velocity.z === 0 && this.model.velocity.x === 0) {
                     this.model.applyImpulse(new CANNON.Vec3(xSpeed, 0, zSpeed));
                 } else {
@@ -131,12 +131,12 @@ export class BasicCharacterController {
 
                 // this.model.velocity.x += xSpeed;
                 // this.model.velocity.z += zSpeed;
-                var angleDiff = targetAngle - this.model.quaternion.y;
-                angleDiff = (angleDiff + Math.PI) % (2 * Math.PI) - Math.PI;
 
-                this.model.quaternion.setFromAxisAngle(new CANNON.Vec3(0, 1, 0), targetAngle);
-                //     this.model.applyForce()
-                // //   this.model.rotation.y += angleDiff * this.rotationSmoothing;
+                // var angleDiff = targetAngle - this.model.quaternion.y;
+                // angleDiff = (angleDiff + Math.PI) % (2 * Math.PI) - Math.PI;
+
+                var qy = new Quaternion().setFromAxisAngle(new Vector3(0, 1, 0), targetAngleRad);
+                this.model.quaternion.copy(qy as any);
             }
 
 

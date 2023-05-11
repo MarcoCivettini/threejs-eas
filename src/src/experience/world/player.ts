@@ -1,8 +1,10 @@
-import { Quaternion, Raycaster } from 'three';
+import { ArrowHelper, Raycaster } from 'three';
 import { Experience } from '../experience';
 import { BasicCharacterController } from '../utils/movements';
 import * as CANNON from 'cannon-es';
-import { Vector3, Mesh, Group, sRGBEncoding, RepeatWrapping, AnimationMixer } from 'three';
+import { Vector3, Mesh, Group, AnimationMixer } from 'three';
+import { EventHandler } from '../utils/event-handler';
+import { getAngleRadFromQuaternion } from '../utils/angle';
 
 export default class Player {
     experience: Experience;
@@ -34,11 +36,11 @@ export default class Player {
 
         // this.model = this.createPlayer(new Vector3(0.5, 1, 0.5));
         this.model = this.createPlayer(new Vector3(0.2, 0.2, 0.2));
-        
+
         // N.B. quickfix for the player / physics spacing
         const armature = this.model.children[0];
         armature.position.y -= 1.5;
-        
+
         this.physicsBody = this.createPhysicsBody(this.model);
         this.characterController = new BasicCharacterController({ model: this.physicsBody, speed: this.speed, rotationSmoothing: this.rotationSmoothing });
         this.physicsBody.velocity.x = 1;
@@ -46,6 +48,8 @@ export default class Player {
 
         this.physicsWord.addBody(this.physicsBody, this.model);
         this.animation = this.setAnimation();
+
+        EventHandler.register('attack').subscribe(() => this.attackAction())
         // this.raycaster =   new Raycaster(new Vector3(0, -3, -2), new Vector3(0,0,1));
         // const intersects = this.raycaster.intersectObjects( this.scene.children );
         // console.log('intersects', intersects)
@@ -54,6 +58,19 @@ export default class Player {
     update(): void {
         this.animation.mixer.update(this.time.delta * 0.001);
         this.characterController.update();
+    }
+
+    attachWeapon(weapon: Group): void {
+        // TODO improve this correct bone research
+        const bone = this.model.children[0].children[0].children[0].children[0];
+        // clear bone from existing items from mesh
+        bone.remove(bone.children[1]);
+        bone.remove(bone.children[0]);
+
+        // weapon.position.x = 0.75;
+        weapon.rotateY(Math.PI / 2);
+
+        bone.add(weapon)
     }
 
     private createPlayer(dimension: any): Mesh {
@@ -84,19 +101,7 @@ export default class Player {
         return body;
     }
 
-    attachWeapon(weapon: Group): void {
-        // TODO improve this correct bone research
-        const bone = this.model.children[0].children[0].children[0].children[0];
-        // clear bone from existing items from mesh
-        bone.remove(bone.children[1]);
-        bone.remove(bone.children[0]);
-
-        // weapon.position.x = 0.75;
-        weapon.rotateY(Math.PI / 2);
-
-        bone.add(weapon)
-    }
-
+    // TODO move setAnimation into Animation.ts
     private setAnimation(): any {
         console.log(this.playerResource.animations);
         const animation: any = {};
@@ -106,8 +111,8 @@ export default class Player {
         animation.actions.attack2 = animation.mixer.clipAction(this.playerResource.animations[1]);
         animation.actions.spin = animation.mixer.clipAction(this.playerResource.animations[2]);
 
-        animation.actions.current = animation.actions.attack1;
-        animation.actions.current.play();
+        animation.actions.current = undefined;
+        // animation.actions.current.play();
 
 
         animation.play = (name: string) => {
@@ -115,12 +120,14 @@ export default class Player {
             const oldAction = animation.actions.current;
             newAction.reset();
             newAction.play();
-            newAction.crossFadeFrom(oldAction, 0.1);
+            if (oldAction) {
+                newAction.crossFadeFrom(oldAction, 0.1);
+            }
             animation.actions.current = newAction;
         }
 
         animation.stop = () => {
-            animation.actions.current.stop();
+            animation.actions.current?.stop();
         }
 
         // if (this.debug.active) {
@@ -138,11 +145,7 @@ export default class Player {
 
 
 
-    playAnimation(actionName: string) {
-        if (!actionName) {
-            console.log('resetg');
-            this.animation.stop();
-        }
+    private playAnimation(actionName: string) {
         const newAction = this.animation.actions[actionName];
         const oldAction = this.animation.actions.current;
         if (newAction !== oldAction) {
@@ -150,5 +153,33 @@ export default class Player {
         }
     }
 
+    private stopAnimation(): void {
+        if (this.animation.actions.current) {
+            this.animation.stop();
+            this.animation.actions.current = undefined;
+        }
+    }
 
+
+    private attackAction(): void {
+        this.playAnimation('attack1');
+        const raycaster = new Raycaster();
+
+        const modelRotationRadiant = getAngleRadFromQuaternion(this.physicsBody.quaternion);
+        const xRotation = Math.sin(modelRotationRadiant);
+        const zRotation = -Math.cos(modelRotationRadiant);
+
+        raycaster.set(this.model.position, new Vector3(xRotation, 0, zRotation));
+        raycaster.far = 2;
+        const arrow = new ArrowHelper(raycaster.ray.direction, this.model.position, 2, '#FF0000');
+        const intersects = raycaster.intersectObjects(this.scene.children);
+        console.log(intersects);
+
+        this.scene.add(arrow);
+        setTimeout(() => {
+            this.stopAnimation();
+        }, 1000)
+
+    }
+ 
 }

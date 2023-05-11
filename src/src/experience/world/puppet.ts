@@ -23,7 +23,7 @@ export class Puppet{
         this.model = this.resources.items.puppetModel.scene;
         // console.log('model', this.model)
          this.model.scale.set(0.02,0.02,0.02);
-        this.model.position.copy(new Vector3(0,-5,0));
+        this.model.position.copy(new Vector3(0,0,0));
         this.scene.add(this.model);
         console.log(this.physicsWorld)
         this.physicsWorld.addBody(this.createPhysicsBody(position), this.model);
