@@ -31,7 +31,9 @@ export default class World {
             this.thirdPersonCamera = new ThirdPersonCamera({ model: this.player.model, camera: this.experience.camera });
             new Wall(new Vector3(-2, 0.5, -2));
             new Wall(new Vector3(2, 0.5, 2));
-            new Puppet(new Vector3(0, -3, 2));
+            new Puppet(new Vector3(0, -0.5, 9), 'Puppet1');
+            new Puppet(new Vector3(0, 0, -2), 'Puppet2');
+
 
             const swordGenerator = new SwordGenerator();
             const sword = swordGenerator.getSword();

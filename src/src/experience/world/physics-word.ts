@@ -1,6 +1,8 @@
 import * as CANNON from 'cannon-es';
 import { Experience } from '../experience';
 import CannonDebugger from 'cannon-es-debugger'
+import { EntityManager } from './entity-manager';
+import { Mesh } from 'three';
 
 
 export default class PhysicsWorld {
@@ -8,24 +10,24 @@ export default class PhysicsWorld {
     time: any;
     world: CANNON.World;
     cannonDebugger: any;
-    objectsToUpdate: any[];
+    entityManager: EntityManager;
     constructor() {
         this.experience = new Experience();
         this.time = this.experience.time;
         this.world = this.createPhysicWorld();
-
+        this.entityManager = this.experience.entityManager;
         this.cannonDebugger = CannonDebugger(this.experience.scene, this.world);
         this.addDefaultContactMaterial();
-        this.objectsToUpdate = [];
+        // this.objectsToUpdate = [];
 
     }
 
     update() {
         // console.log(this.world.bodies);
 
-        for (const object of this.objectsToUpdate) {
-            object.mesh.position.copy(object.body.position)
-            object.mesh.quaternion.copy(object.body.quaternion)
+        for (const object of this.entityManager.entities) {
+            object.mesh.position.copy(object.body.position as any);
+            object.mesh.quaternion.copy(object.body.quaternion as any);
         }
 
         this.world.step(1 / 60, this.time.delta, 3);
@@ -33,11 +35,10 @@ export default class PhysicsWorld {
          this.cannonDebugger.update()
     }
 
-    addBody(body: any, mesh: any) {
+    addBody(body: CANNON.Body, mesh: Mesh, instance: any) {
         this.world.addBody(body);
-        this.objectsToUpdate.push({
-            mesh,
-            body
+        this.entityManager.add({
+            body, mesh, instance
         })
     }
 

@@ -1,24 +1,25 @@
 import {Experience} from "../experience";
 import * as CANNON from 'cannon-es';
 import { Mesh, BoxGeometry, MeshStandardMaterial, Vector3 } from "three";
+import PhysicsWorld from "./physics-word";
 
 
 export default class Wall {
     experience: Experience;
     scene: any;
-    physicsWord: any;
+    physicsWorld: PhysicsWorld;
     model: Mesh<BoxGeometry, MeshStandardMaterial>;
 
 
     constructor(position: any) {
         this.experience = new Experience();
         this.scene = this.experience.scene;
-        this.physicsWord = this.experience.physicsWold;
+        this.physicsWorld = this.experience.physicsWold;
 
 
         this.model = this.createWall(new Vector3(2, 1 , 1), position);
         this.scene.add(this.model);
-        this.physicsWord.addBody(this.createPhysicsBody(this.model), this.model);
+        this.physicsWorld.addBody(this.createPhysicsBody(this.model), this.model, this);
 
     }
 
@@ -43,7 +44,7 @@ export default class Wall {
         const body = new CANNON.Body({
             mass: 0,
             shape,
-            material: this.physicsWord.world.defaultMaterial
+            material: this.physicsWorld.world.defaultMaterial
         })
         body.position.copy(mesh.position);
         return body;

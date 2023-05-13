@@ -1,6 +1,7 @@
 import {Experience} from "../experience";
 import * as CANNON from 'cannon-es';
 import { Mesh, Raycaster, Vector3 } from "three";
+import PhysicsWorld from "./physics-word";
 // import { SimplifyModifier } from 'three/examples/jsm/modifiers/SimplifyModifier';
 
 
@@ -8,7 +9,7 @@ export default class Floor {
     experience: Experience;
     scene: any;
     resources: any;
-    physicsWord: any;
+    physicsWord: PhysicsWorld;
     resource: any;
     model: any;
     constructor() {

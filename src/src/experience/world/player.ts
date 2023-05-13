@@ -5,6 +5,8 @@ import * as CANNON from 'cannon-es';
 import { Vector3, Mesh, Group, AnimationMixer } from 'three';
 import { EventHandler } from '../utils/event-handler';
 import { getAngleRadFromQuaternion } from '../utils/angle';
+import PhysicsWorld from './physics-word';
+import { EntityManager } from './entity-manager';
 
 export default class Player {
     experience: Experience;
@@ -13,13 +15,14 @@ export default class Player {
     playerResource: any;
     time: any;
     debug: any;
-    physicsWord: any;
+    physicsWord: PhysicsWorld;
     speed: number;
     rotationSmoothing: number;
     physicsBody: CANNON.Body;
     characterController: BasicCharacterController;
     model: Mesh;
     animation: any;
+    private entityManager: EntityManager;
     // raycaster: Raycaster;
 
     constructor() {
@@ -30,7 +33,7 @@ export default class Player {
         this.time = this.experience.time;
         this.debug = this.experience.debug;
         this.physicsWord = this.experience.physicsWold;
-
+        this.entityManager = this.experience.entityManager;
         this.speed = 1;
         this.rotationSmoothing = 0.05;
 
@@ -46,7 +49,7 @@ export default class Player {
         this.physicsBody.velocity.x = 1;
         this.scene.add(this.model);
 
-        this.physicsWord.addBody(this.physicsBody, this.model);
+        this.physicsWord.addBody(this.physicsBody, this.model, this);
         this.animation = this.setAnimation();
 
         EventHandler.register('attack').subscribe(() => this.attackAction())
@@ -92,7 +95,7 @@ export default class Player {
         const body = new CANNON.Body({
             mass: 50,
             shape,
-            material: this.physicsWord.world.defaultContactMaterial
+            material: this.physicsWord.world.defaultMaterial,
         });
         body.position.copy(mesh.position as any);
         return body;
@@ -170,6 +173,14 @@ export default class Player {
         raycaster.far = 2;
         const arrow = new ArrowHelper(raycaster.ray.direction, this.model.position, 2, '#FF0000');
         const intersects = raycaster.intersectObjects(this.scene.children);
+        intersects.forEach(element => {
+            const entity = this.entityManager.entities.find(x => x.mesh.uuid === element.object.uuid)
+            if (!entity) { return; }
+
+            if(entity.instance?.isAttackable){
+                entity.instance?.onHit();
+            }
+        });
         console.log(intersects);
 
         this.scene.add(arrow);
@@ -178,5 +189,5 @@ export default class Player {
         }, 1000)
 
     }
- 
+
 }

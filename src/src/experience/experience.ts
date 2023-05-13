@@ -8,6 +8,7 @@ import Sizes from "./utils/sizes";
 import Time from "./utils/time";
 import PhysicsWorld from "./world/physics-word";
 import World from "./world/world";
+import { EntityManager } from "./world/entity-manager";
 
 let instance: Experience | null = null;
 
@@ -23,6 +24,7 @@ export class Experience {
     renderer: any;
     world: any;
     physicsWold: any;
+    entityManager: EntityManager = new EntityManager();
 
     constructor(canvas?: HTMLElement) {
         if (instance) {
