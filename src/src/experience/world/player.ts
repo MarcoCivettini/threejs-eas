@@ -177,6 +177,7 @@ export default class Player {
         raycaster.set(this.model.position, new Vector3(xRotation, 0, zRotation));
         raycaster.far = 2;
         const arrow = new ArrowHelper(raycaster.ray.direction, this.model.position, 2, '#FF0000');
+        this.scene.add(arrow);
         const intersects = raycaster.intersectObjects(this.scene.children);
         intersects.forEach(element => {
             const entity = this.entityManager.entities.find(x => x.mesh.uuid === element.object.uuid)
