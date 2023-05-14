@@ -1,4 +1,4 @@
-import { ArrowHelper, Raycaster } from 'three';
+import { AnimationAction, ArrowHelper, LoopOnce, Raycaster } from 'three';
 import { Experience } from '../experience';
 import { BasicCharacterController } from '../utils/movements';
 import * as CANNON from 'cannon-es';
@@ -116,12 +116,12 @@ export default class Player {
 
 
         animation.play = (name: string) => {
-            const newAction = animation.actions[name];
+            const newAction: AnimationAction = animation.actions[name];
             const oldAction = animation.actions.current;
             newAction.reset();
             newAction.play();
             if (oldAction) {
-                newAction.crossFadeFrom(oldAction, 0.1);
+                newAction.crossFadeFrom(oldAction, 0.1, false);
             }
             animation.actions.current = newAction;
         }
@@ -148,6 +148,8 @@ export default class Player {
     private playAnimation(actionName: string) {
         const newAction = this.animation.actions[actionName];
         const oldAction = this.animation.actions.current;
+        newAction.reset();
+        newAction.setLoop(LoopOnce, 0);
         if (newAction !== oldAction) {
             this.animation.play(actionName)
         }
@@ -162,6 +164,9 @@ export default class Player {
 
 
     private attackAction(): void {
+        if (this.animation.actions.attack1.isRunning()) {
+            return;
+        }
         this.playAnimation('attack1');
         const raycaster = new Raycaster();
 
@@ -177,16 +182,12 @@ export default class Player {
             const entity = this.entityManager.entities.find(x => x.mesh.uuid === element.object.uuid)
             if (!entity) { return; }
 
-            if(entity.instance?.isAttackable){
+            if (entity.instance?.isAttackable) {
                 entity.instance?.onHit();
             }
         });
         console.log(intersects);
 
-        this.scene.add(arrow);
-        setTimeout(() => {
-            this.stopAnimation();
-        }, 1000)
 
     }
 
