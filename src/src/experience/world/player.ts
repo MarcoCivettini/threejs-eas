@@ -7,6 +7,7 @@ import { EventHandler } from '../utils/event-handler';
 import { getAngleRadFromQuaternion } from '../utils/angle';
 import PhysicsWorld from './physics-word';
 import { EntityManager } from './entity-manager';
+// import { HealthComponent } from './health-component';
 
 export default class Player {
     experience: Experience;
@@ -23,6 +24,8 @@ export default class Player {
     model: Mesh;
     animation: any;
     private entityManager: EntityManager;
+    // private healtComponent: HealthComponent;
+
     // raycaster: Raycaster;
 
     constructor() {
@@ -47,6 +50,14 @@ export default class Player {
         this.physicsBody = this.createPhysicsBody(this.model);
         this.characterController = new BasicCharacterController({ model: this.physicsBody, speed: this.speed, rotationSmoothing: this.rotationSmoothing });
         this.physicsBody.velocity.x = 1;
+
+        // this.healtComponent = new HealthComponent(3);
+        // this.healtComponent.setParent(this);
+        // // this.healtComponent.onDeath = () => this.onDeath();
+        // // this.healtComponent.setBarScale();
+        // this.scene.add(this.model);
+
+
         this.scene.add(this.model);
 
         this.physicsWord.addBody(this.physicsBody, this.model, this);
