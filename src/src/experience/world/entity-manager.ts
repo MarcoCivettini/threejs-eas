@@ -18,7 +18,7 @@ export class EntityManager {
     }
 }
 
-export interface Entity{
+interface Entity{
     body: CANNON.Body;
     mesh: Mesh;
     instance: any;

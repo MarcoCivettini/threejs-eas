@@ -1,13 +1,10 @@
 import { DoubleSide, Mesh, MeshBasicMaterial, PlaneGeometry, Vector3 } from "three";
-import { Experience } from "../experience";
+import { Component } from "../models/component";
+import { healthComponentName } from "../constants/components";
 
-export class HealthComponent {
-    private experience: Experience = new Experience();
-    private scene = this.experience.scene;
-
+export class HealthComponent extends Component {
     private maxHealth: number;
     private currentHealth: number;
-    private parent: any;
     private healthBarMesh?: Mesh;
 
     private readonly healthBarDimension = 1;
@@ -15,6 +12,7 @@ export class HealthComponent {
     onDeath?: () => void;
 
     constructor(maxHealth: number) {
+        super(healthComponentName);
         this.maxHealth = maxHealth;
         this.currentHealth = maxHealth;
     }
@@ -39,11 +37,11 @@ export class HealthComponent {
     setParent(parent: any) {
         const geometry = new PlaneGeometry(this.healthBarDimension, 0.075);
 
-        const backgroundMaterial = new MeshBasicMaterial({ color: 0xff0000, side: DoubleSide , depthTest: true, depthWrite: false });
+        const backgroundMaterial = new MeshBasicMaterial({ color: 0xff0000, side: DoubleSide, depthTest: true, depthWrite: false });
         // backgroundMaterial.depthWrite = false;
         const backgroundMesh = new Mesh(geometry, backgroundMaterial);
 
-        const healthBarMaterial = new MeshBasicMaterial({ color: 0x00ff00, side: DoubleSide,depthTest: true });
+        const healthBarMaterial = new MeshBasicMaterial({ color: 0x00ff00, side: DoubleSide, depthTest: true });
         this.healthBarMesh = new Mesh(geometry, healthBarMaterial);
 
         backgroundMesh.position.setY(0.8);
