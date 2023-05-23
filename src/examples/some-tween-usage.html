@@ -37,7 +37,6 @@
         import dat from 'https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/+esm';
 
 
-
         const EASINGS = [
             { name: 'Linear.None', value: TWEEN.Easing.Linear.None },
             { name: 'Quadratic.In', value: TWEEN.Easing.Quadratic.In },
@@ -73,13 +72,21 @@
         ];
 
         var easing = EASINGS[0];
+        var duration = 2000;
+
         var settings = {
-            easingName: easing.name
-        }
+            easingName: easing.name,
+            duration
+        };
 
         var gui = new dat.GUI();
+
         gui.add(settings, 'easingName', EASINGS.map(x => x.name)).onChange((value) => {
             easing = EASINGS.find(x => x.name == value)
+        });
+
+        gui.add(settings, 'duration', 0, 10000).onChange((value) => {
+            duration = value
         });
 
         const PLANE_WIDTH = 30;
@@ -140,7 +147,7 @@
                 tween = new TWEEN.Tween(cube.position);
                 // tween.repeat(Infinity)
                 tween.easing(easing.value);
-                tween.to(destination, 2000);
+                tween.to(destination, duration);
                 tween.start();
 
             },
