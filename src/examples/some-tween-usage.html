@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>three.js webgl - particles - sprites</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+</head>
+
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+
+    <script type="importmap">
+			{
+				"imports": {
+					"three": "https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.module.min.js",
+					"orbit": "https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/controls/OrbitControls.js",
+					"tween": "https://cdn.jsdelivr.net/npm/@tweenjs/tween.js@20.0.3/+esm"
+				}
+			}
+		</script>
+
+    <script type="module">
+
+        import * as THREE from 'three';
+        import { OrbitControls } from 'orbit';
+
+        import * as TWEEN from 'tween';
+        import dat from 'https://cdn.jsdelivr.net/npm/dat.gui@0.7.9/+esm';
+
+
+
+        const EASINGS = [
+            { name: 'Linear.None', value: TWEEN.Easing.Linear.None },
+            { name: 'Quadratic.In', value: TWEEN.Easing.Quadratic.In },
+            { name: 'Quadratic.Out', value: TWEEN.Easing.Quadratic.Out },
+            { name: 'Quadratic.InOut', value: TWEEN.Easing.Quadratic.InOut },
+            { name: 'Cubic.In', value: TWEEN.Easing.Cubic.In },
+            { name: 'Cubic.Out', value: TWEEN.Easing.Cubic.Out },
+            { name: 'Cubic.InOut', value: TWEEN.Easing.Cubic.InOut },
+            { name: 'Quartic.In', value: TWEEN.Easing.Quartic.In },
+            { name: 'Quartic.Out', value: TWEEN.Easing.Quartic.Out },
+            { name: 'Quartic.InOut', value: TWEEN.Easing.Quartic.InOut },
+            { name: 'Quintic.In', value: TWEEN.Easing.Quintic.In },
+            { name: 'Quintic.Out', value: TWEEN.Easing.Quintic.Out },
+            { name: 'Quintic.InOut', value: TWEEN.Easing.Quintic.InOut },
+            { name: 'Sinusoidal.In', value: TWEEN.Easing.Sinusoidal.In },
+            { name: 'Sinusoidal.Out', value: TWEEN.Easing.Sinusoidal.Out },
+            { name: 'Sinusoidal.InOut', value: TWEEN.Easing.Sinusoidal.InOut },
+            { name: 'Exponential.In', value: TWEEN.Easing.Exponential.In },
+            { name: 'Exponential.Out', value: TWEEN.Easing.Exponential.Out },
+            { name: 'Exponential.InOut', value: TWEEN.Easing.Exponential.InOut },
+            { name: 'Circular.In', value: TWEEN.Easing.Circular.In },
+            { name: 'Circular.Out', value: TWEEN.Easing.Circular.Out },
+            { name: 'Circular.InOut', value: TWEEN.Easing.Circular.InOut },
+            { name: 'Elastic.In', value: TWEEN.Easing.Elastic.In },
+            { name: 'Elastic.Out', value: TWEEN.Easing.Elastic.Out },
+            { name: 'Elastic.InOut', value: TWEEN.Easing.Elastic.InOut },
+            { name: 'Back.In', value: TWEEN.Easing.Back.In },
+            { name: 'Back.Out', value: TWEEN.Easing.Back.Out },
+            { name: 'Back.InOut', value: TWEEN.Easing.Back.InOut },
+            { name: 'Bounce.In', value: TWEEN.Easing.Bounce.In },
+            { name: 'Bounce.Out', value: TWEEN.Easing.Bounce.Out },
+            { name: 'Bounce.InOut', value: TWEEN.Easing.Bounce.InOut },
+        ];
+
+        var easing = EASINGS[0];
+        var settings = {
+            easingName: easing.name
+        }
+
+        var gui = new dat.GUI();
+        gui.add(settings, 'easingName', EASINGS.map(x => x.name)).onChange((value) => {
+            easing = EASINGS.find(x => x.name == value)
+        });
+
+        const PLANE_WIDTH = 30;
+        const PLANE_HEIGHT = 30;
+
+        const scene = new THREE.Scene();
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.x = 10;
+        camera.position.y = 10;
+        camera.position.z = 10;
+        // camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        const controls = new OrbitControls(camera, renderer.domElement);
+        var clock = new THREE.Clock();
+
+        const light = new THREE.AmbientLight(0x404040); // soft white light
+        scene.add(light);
+
+        const planeGeometry = new THREE.PlaneGeometry(PLANE_WIDTH, PLANE_HEIGHT);
+        const planeMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00, side: THREE.DoubleSide });
+        const plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.rotation.x = Math.PI / 180 * -90;
+        scene.add(plane);
+
+        const placeholderGeometry = new THREE.BoxGeometry(.75, .75, .75);
+        const placeholderMaterial = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const placeholder = new THREE.Mesh(placeholderGeometry, placeholderMaterial);
+        placeholder.position.y = 0.48;
+        scene.add(placeholder);
+
+        const geometry = new THREE.BoxGeometry(1, 1, 1);
+        const material = new THREE.MeshNormalMaterial();
+        const cube = new THREE.Mesh(geometry, material);
+        cube.position.y = 0.51;
+        scene.add(cube);
+
+        var tween = new TWEEN.Tween(cube.position);
+
+        document.addEventListener(
+            "keypress",
+            event => {
+
+                const destination = {
+                    x: THREE.MathUtils.randFloatSpread(PLANE_WIDTH),
+                    z: THREE.MathUtils.randFloatSpread(PLANE_HEIGHT),
+                };
+
+                placeholder.position.x = destination.x;
+                placeholder.position.z = destination.z;
+
+                tween?.pause();
+
+                tween = new TWEEN.Tween(cube.position);
+                // tween.repeat(Infinity)
+                tween.easing(easing.value);
+                tween.to(destination, 2000);
+                tween.start();
+
+            },
+            false
+        );
+
+        function animate() {
+            requestAnimationFrame(animate);
+            render();
+        }
+
+
+        function render() {
+            const delta = clock.getDelta();
+
+            controls.update();
+            TWEEN.update()
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+
+    </script>
+</body>
+
+</html>
