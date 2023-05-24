@@ -1,11 +1,12 @@
 import { Experience } from '../experience';
-import { BasicCharacterController } from '../utils/movements';
 import * as CANNON from 'cannon-es';
 import { Vector3, Mesh, Group } from 'three';
 import PhysicsWorld from './physics-word';
 import { Entity } from '../models/entity';
 import { AttackComponent } from './attack-component';
 import { AnimationComponent } from './animation-component';
+import { ChartacterController } from './character-controller';
+import { KeyboardInputController } from './keyboard-input-controller';
 // import { HealthComponent } from './health-component';
 
 export default class Player extends Entity {
@@ -16,7 +17,6 @@ export default class Player extends Entity {
     speed: number;
     rotationSmoothing: number;
     physicsBody: CANNON.Body;
-    characterController: BasicCharacterController;
     model: Mesh;
     animation: any;
 
@@ -37,8 +37,6 @@ export default class Player extends Entity {
 
         this.physicsBody = this.createPhysicsBody(this.model);
         this.physicsBody.velocity.x = 1;
-        
-        this.characterController = new BasicCharacterController({ model: this.physicsBody, speed: this.speed, rotationSmoothing: this.rotationSmoothing });
 
         // this.healtComponent = new HealthComponent(3);
         // this.healtComponent.setParent(this);
@@ -51,6 +49,9 @@ export default class Player extends Entity {
 
         this.physicsWord.addBody(this.physicsBody, this.model, this);
 
+        const characterController = new ChartacterController().withInputController(new KeyboardInputController());
+        this.registerComponent(characterController);
+
         const attackComponent = new AttackComponent().withAnimation('attack1');
         this.registerComponent(attackComponent);
 
@@ -61,7 +62,6 @@ export default class Player extends Entity {
     }
 
     update(): void {
-        this.characterController.update();
         super.update();
     }
 
