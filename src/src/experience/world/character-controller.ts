@@ -7,8 +7,10 @@ import { InputState } from "../models/input-state";
 
 export class ChartacterController extends Component {
     private inputState?: InputState;
-    constructor() {
+    private speed: number;
+    constructor(speed: number) {
         super('characterController')
+        this.speed = speed;
     }
 
     withInputController(inputController: InputState): this {
@@ -29,10 +31,10 @@ export class ChartacterController extends Component {
         let zSpeed = 0;
 
         if (this.inputState.left || this.inputState.right || this.inputState.up || this.inputState.down) {
-            if (this.inputState.left) xSpeed -= parent.speed; // Left arrow
-            if (this.inputState.up) zSpeed -= parent.speed; // Up arrow
-            if (this.inputState.right) xSpeed += parent.speed; // Right arrow
-            if (this.inputState.down) zSpeed += parent.speed; // Down arrow
+            if (this.inputState.left) xSpeed -= this.speed; // Left arrow
+            if (this.inputState.up) zSpeed -= this.speed; // Up arrow
+            if (this.inputState.right) xSpeed += this.speed; // Right arrow
+            if (this.inputState.down) zSpeed += this.speed; // Down arrow
 
             if (xSpeed || zSpeed) {
                 // const targetAngleDeg = this.getAngleDegrees(xSpeed, -zSpeed);

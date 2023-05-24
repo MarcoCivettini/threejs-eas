@@ -6,6 +6,8 @@ import { EntityManager } from "./entity-manager";
 import { HealthComponent } from "./health-component";
 import { Entity } from "../models/entity";
 import { healthComponentName } from "../constants/components";
+import { ChartacterController } from "./character-controller";
+import { AiInputController } from "./ai-input-controller";
 
 export class Puppet extends Entity {
     model: Mesh;
@@ -16,6 +18,7 @@ export class Puppet extends Entity {
     private scene: Scene = this.experience.scene;
     private entityManager: EntityManager;
     private physicsWorld: PhysicsWorld = this.experience.physicsWold;
+    physicsBody: CANNON.Body;
 
     constructor(position: Vector3, name: string) {
         super();
@@ -23,31 +26,21 @@ export class Puppet extends Entity {
         this.entityManager = this.experience.entityManager;
 
         this.model = this.createWall(new Vector3(0.5, 1, 0.5), position);
-        this.physicsWorld.addBody(this.createPhysicsBody(this.model), this.model, this);
+        this.physicsBody = this.createPhysicsBody(this.model);
+        this.physicsBody.velocity.x = 1;
+        
+        this.physicsWorld.addBody(this.physicsBody, this.model, this)
+        this.scene.add(this.model);
 
         this.registerHealthComponent();
 
-        this.scene.add(this.model);
+        const characterController = new ChartacterController(0.4).withInputController(new AiInputController());
+        this.registerComponent(characterController);
+
     }
 
-    private createWall(dimension: any, position: any): Mesh {
-        const mesh = new Mesh(new BoxGeometry(1, 1, 1), new MeshStandardMaterial({ color: '#eb2ade' }));
-        mesh.scale.set(dimension.x, dimension.y, dimension.z);
-        mesh.position.copy(position) // = 0.5;
-        mesh.castShadow = true;
-        return mesh;
-    }
-
-    private createPhysicsBody(mesh: any): CANNON.Body {
-        const { x, y, z } = mesh.scale;
-        const shape = new CANNON.Box(new CANNON.Vec3(x / 2, y / 2, z / 2));
-        const body = new CANNON.Body({
-            mass: 0,
-            shape,
-            material: this.physicsWorld.world.defaultMaterial
-        })
-        body.position.copy(mesh.position);
-        return body;
+    update(): void {
+        super.update();
     }
 
     onHit(): void {
@@ -65,6 +58,26 @@ export class Puppet extends Entity {
         const healthComponent = new HealthComponent(3);
         healthComponent.onDeath = () => this.onDeath();
         this.registerComponent(healthComponent);
+    }
+
+    private createWall(dimension: any, position: any): Mesh {
+        const mesh = new Mesh(new BoxGeometry(1, 1, 1), new MeshStandardMaterial({ color: '#eb2ade' }));
+        mesh.scale.set(dimension.x, dimension.y, dimension.z);
+        mesh.position.copy(position) // = 0.5;
+        mesh.castShadow = true;
+        return mesh;
+    }
+
+    private createPhysicsBody(mesh: any): CANNON.Body {
+        const { x, y, z } = mesh.scale;
+        const shape = new CANNON.Sphere(0.7);
+        const body = new CANNON.Body({
+            mass: 50,
+            shape,
+            material: this.physicsWorld.world.defaultMaterial
+        })
+        body.position.copy(mesh.position);
+        return body;
     }
 
 }

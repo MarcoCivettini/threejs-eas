@@ -14,7 +14,6 @@ export default class Player extends Entity {
     scene: any;
     playerResource: any;
     physicsWord: PhysicsWorld;
-    speed: number;
     rotationSmoothing: number;
     physicsBody: CANNON.Body;
     model: Mesh;
@@ -26,7 +25,6 @@ export default class Player extends Entity {
         this.scene = this.experience.scene;
         this.playerResource = this.experience.resources.items.playerModel;
         this.physicsWord = this.experience.physicsWold;
-        this.speed = 1;
         this.rotationSmoothing = 0.05;
 
         this.model = this.createPlayer(new Vector3(0.2, 0.2, 0.2));
@@ -49,7 +47,7 @@ export default class Player extends Entity {
 
         this.physicsWord.addBody(this.physicsBody, this.model, this);
 
-        const characterController = new ChartacterController().withInputController(new KeyboardInputController());
+        const characterController = new ChartacterController(1).withInputController(new KeyboardInputController());
         this.registerComponent(characterController);
 
         const attackComponent = new AttackComponent().withAnimation('attack1');
