@@ -10,9 +10,14 @@ export class Component {
 
     setParent(parent: Entity): void {
         this.parent = parent;
+        this.onRegistration();
     }
 
-    getParent(): Entity | undefined{
+    getParent(): Entity | undefined {
         return this.parent;
     }
+
+    update(): void { }
+
+    protected onRegistration(): void { }
 }

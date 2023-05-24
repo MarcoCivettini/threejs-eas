@@ -1,4 +1,4 @@
-import {  Mesh, PerspectiveCamera, Scene } from "three";
+import { Mesh, PerspectiveCamera, Scene } from "three";
 import Camera from "./camera";
 import Renderer from "./renderer";
 import sources from "./sources";
@@ -15,15 +15,15 @@ let instance: Experience | null = null;
 // Singelton
 export class Experience {
     canvas?: HTMLElement;
-    debug: any;
-    sizes: any;
-    time: any;
-    scene: any;
-    resources: any;
-    camera: any;
-    renderer: any;
-    world: any;
-    physicsWold: any;
+    debug!: Debug;
+    sizes!: Sizes;
+    time!: Time;
+    scene!: Scene;
+    resources!: Resources;
+    camera!: Camera;
+    renderer!: Renderer
+    world!: World;
+    physicsWold!: PhysicsWorld;
     entityManager: EntityManager = new EntityManager();
 
     constructor(canvas?: HTMLElement) {
@@ -44,23 +44,16 @@ export class Experience {
         this.renderer = new Renderer()
         this.world = new World();
         this.physicsWold = new PhysicsWorld();
+        this.sizes.on('resize', () => this.resize())
 
-        this.sizes.on('resize', () => {
-            this.resize();
-        })
-
-        this.time.on('tick', () => {
-            this.update();
-        })
+        this.time.on('tick', () => this.update())
 
         if (this.debug.active) {
 
             const debugObject = {
-                destroy: () => {
-                    this.destroy();
-                }
+                destroy: () => this.destroy()
             }
-            this.debug.ui.add(debugObject, 'destroy')
+            this.debug.ui?.add(debugObject, 'destroy')
         }
     }
 
@@ -70,7 +63,7 @@ export class Experience {
     }
 
     update() {
-        if(this.camera){
+        if (this.camera) {
             this.camera.update();
         }
         this.world?.update();
@@ -95,10 +88,10 @@ export class Experience {
             }
         })
 
-        this.camera.controls.dispose();
+        this.camera.controls?.dispose();
         this.renderer.instance.dispose();
         if (this.debug.active) {
-            this.debug.ui.destroy();
+            this.debug.ui?.destroy();
         }
     }
 }

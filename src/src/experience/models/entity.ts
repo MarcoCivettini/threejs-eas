@@ -11,4 +11,10 @@ export class Entity {
     getComponent(name: string): Component | undefined {
         return this.components.find(x => x.name === name);
     }
+
+    update(): void {
+        for (const component of this.components) {
+            component.update();
+        }
+    }
 }
