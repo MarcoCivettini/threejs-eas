@@ -47,7 +47,7 @@ export default class Player extends Entity {
 
         this.physicsWord.addBody(this.physicsBody, this.model, this);
 
-        const characterController = new ChartacterController(1).withInputController(new KeyboardInputController());
+        const characterController = new ChartacterController(1.5).withInputController(new KeyboardInputController());
         this.registerComponent(characterController);
 
         const attackComponent = new AttackComponent().withAnimation('attack1');

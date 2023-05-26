@@ -13,7 +13,7 @@ export class ChartacterController extends Component {
     private targetPosition = new Vector3();
     private targetQuaternion = new Quaternion();
     private currentQuaternion = new Quaternion();
-    private readonly rotationSpeed = 0.08;
+    private readonly rotationSpeed: number = 0.08;
     constructor(speed: number) {
         super('characterController')
         this.speed = speed;
