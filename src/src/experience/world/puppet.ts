@@ -34,8 +34,8 @@ export class Puppet extends Entity {
 
         this.registerHealthComponent();
 
-        const characterController = new ChartacterController(0.4).withInputController(new AiInputController());
-        this.registerComponent(characterController);
+        // const characterController = new ChartacterController(0.4).withInputController(new AiInputController());
+        // this.registerComponent(characterController);
 
     }
 
@@ -72,7 +72,7 @@ export class Puppet extends Entity {
         const { x, y, z } = mesh.scale;
         const shape = new CANNON.Sphere(0.7);
         const body = new CANNON.Body({
-            mass: 50,
+            mass: 0,
             shape,
             material: this.physicsWorld.world.defaultMaterial
         })
