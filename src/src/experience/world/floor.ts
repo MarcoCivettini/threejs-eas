@@ -67,9 +67,6 @@ export default class Floor {
 
         body.position.x = -15
         body.position.z = 15
-        body.position.y = -6
-
-
 
         body.addShape(shape);
         this.physicsWord.world.addBody(body);
@@ -121,7 +118,7 @@ export default class Floor {
                 const intersects = raycaster.intersectObject(mesh, false);
 
                 if (intersects.length > 0) {
-                    matrix[x + dimension][-z + dimension] = (intersects[0].point.y * yScale) + 5.85;
+                    matrix[x + dimension][-z + dimension] = (intersects[0].point.y * yScale);
                 } else {
                     matrix[x + dimension][-z + dimension] = 0;
                 }
