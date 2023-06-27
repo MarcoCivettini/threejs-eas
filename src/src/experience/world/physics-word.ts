@@ -32,7 +32,7 @@ export default class PhysicsWorld {
 
         this.world.step(1 / 60, this.time.delta, 3);
 
-         this.cannonDebugger.update()
+        //  this.cannonDebugger.update()
     }
 
     addBody(body: CANNON.Body, mesh: Mesh, instance: any) {

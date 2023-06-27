@@ -1,6 +1,6 @@
 import { Experience } from '../experience';
 import * as CANNON from 'cannon-es';
-import { Vector3, Mesh, Group } from 'three';
+import { Vector3, Mesh, Group, Object3D } from 'three';
 import PhysicsWorld from './physics-word';
 import { Entity } from '../models/entity';
 import { AttackComponent } from './attack-component';
@@ -63,9 +63,13 @@ export default class Player extends Entity {
         super.update();
     }
 
+    getSwordBone(): Object3D{
+        return this.model.children[0].children[0].children[0].children[0];
+    }
+
     attachWeapon(weapon: Group): void {
         // TODO improve this correct bone research
-        const bone = this.model.children[0].children[0].children[0].children[0];
+        const bone = this.getSwordBone();
         // clear bone from existing items from mesh
         bone.remove(bone.children[1]);
         bone.remove(bone.children[0]);

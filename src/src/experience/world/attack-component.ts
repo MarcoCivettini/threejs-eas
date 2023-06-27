@@ -2,7 +2,7 @@ import { ArrowHelper, Intersection, Raycaster, Vector3 } from 'three';
 import { AnimationComponentName, AttackComponentName } from '../constants/components';
 import { Component } from "../models/component";
 import { EventHandler } from '../utils/event-handler';
-import { getAngleRadFromQuaternion } from '../utils/angle';
+import { getAngleRadFromQuaternion, getAngleRadFromQuaternionThree } from '../utils/angle';
 import { Experience } from '../experience';
 import { AnimationComponent } from './animation-component';
 
@@ -44,6 +44,27 @@ export class AttackComponent extends Component {
         this.hitAttackableEntities(intersects);
     }
 
+    update(): void {
+        const parent = this.getParent() as any;
+
+        if (this.isOnAttack(parent)) {
+            // getSwordBone is not correct for all parent (REFACTOR THIS CODE)
+            const swordBone = parent?.getSwordBone();
+            console.log(swordBone.quaternion);
+
+            const modelRotationRadiant = getAngleRadFromQuaternionThree(swordBone.quaternion);
+            const xRotation = Math.sin(modelRotationRadiant );
+            const zRotation = Math.cos(modelRotationRadiant);
+            const boneDirection =  new Vector3(xRotation, 0, zRotation );
+            
+            const raycaster = new Raycaster();
+            raycaster.set(parent.model.position, boneDirection );
+            raycaster.far = 3;
+            this.addDebugArrow(raycaster, parent.model.position, 3);
+            // console.log(direction);
+        }
+    }
+
     private hitAttackableEntities(intersections: Intersection[]): void {
         const attackableEntityIntersected = this.entityManager.entities.filter(e =>
             intersections.find(x => e.mesh.uuid === x.object.uuid && e.instance?.isAttackable)
@@ -70,6 +91,17 @@ export class AttackComponent extends Component {
         raycaster.set(parent.model.position, parentRotationAngle);
         raycaster.far = far;
         return raycaster;
+    }
+
+    // replace by finite state machine
+    private isOnAttack(parent: any): boolean {
+        // const parent = this.getParent() as any;
+
+        if (this.attackAnimationName) {
+            const animation = parent?.getComponent(AnimationComponentName) as AnimationComponent;
+            return animation.getAnimation(this.attackAnimationName)?.isRunning() || false
+        }
+        return false;
     }
 
 }
