@@ -5,6 +5,7 @@ import { EventHandler } from '../utils/event-handler';
 import { getAngleRadFromQuaternion } from '../utils/angle';
 import { Experience } from '../experience';
 import { AnimationComponent } from './animation-component';
+import { HitParticleSystem } from '../particle-systems/hit';
 
 
 export class AttackComponent extends Component {
@@ -42,6 +43,8 @@ export class AttackComponent extends Component {
 
         const intersects = raycaster.intersectObjects(this.scene.children);
         this.hitAttackableEntities(intersects);
+
+        // TODO add particle effects
     }
 
     private hitAttackableEntities(intersections: Intersection[]): void {

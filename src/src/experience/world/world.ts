@@ -1,5 +1,5 @@
 import { SwordGenerator } from './sword-generator';
-import { Vector3 } from "three";
+import { BufferGeometry, Vector3 } from "three";
 import { Experience } from "../experience";
 import { ThirdPersonCamera } from "../utils/third-person-camera";
 import Environment from "./enviroment";
