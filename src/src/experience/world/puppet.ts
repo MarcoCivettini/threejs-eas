@@ -8,11 +8,14 @@ import { Entity } from "../models/entity";
 import { healthComponentName } from "../constants/components";
 import { ChartacterController } from "./character-controller";
 import { AiInputController } from "./ai-input-controller";
+import { HitParticleSystem } from "../particle-systems/hit";
 
 export class Puppet extends Entity {
     model: Mesh;
     isAttackable = true;
     name: string;
+
+    // hitEffect: HitParticleSystem;
 
     private experience: Experience = new Experience();
     private scene: Scene = this.experience.scene;
@@ -46,6 +49,17 @@ export class Puppet extends Entity {
     onHit(): void {
         const healthComponent = this.getComponent(healthComponentName) as HealthComponent;
         healthComponent.takeDamage(1);
+
+        // TODO we should extend Object3D
+        const position = this.model.position;
+
+        const ps = new HitParticleSystem(position, 30, 3);
+        this.registerComponent(ps);
+
+        // if (this.hitEffect == null) {
+        //     this.hitEffect = new HitParticleSystem(30, 3);
+        //     this.registerComponent(this.hitEffect);
+        // }
     }
 
     onDeath(): void {

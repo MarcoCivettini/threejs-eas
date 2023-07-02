@@ -8,6 +8,13 @@ export class Entity {
         component.setParent(this);
     }
 
+    unregisterComponent(name: string): void {
+        const idx = this.components.findIndex(x => x.name === name);
+        if (idx != -1) {
+            this.components.splice(idx, 1);
+        }
+    }
+
     getComponent(name: string): Component | undefined {
         return this.components.find(x => x.name === name);
     }
