@@ -17,7 +17,7 @@ export class HitParticleSystem extends Component {
     points: Points;
 
     scene: Scene;
-    effectDuration: number;
+    effectDuration: number; // in seconds
 
     constructor(position: Vector3, particlesAmount: number, effectDuration: number, uuid: string = uuidv4()) {
         super(uuid);
@@ -34,22 +34,23 @@ export class HitParticleSystem extends Component {
                 position.z
             );
             this.desiredVectors.push(
-                position.x + (5 + Math.random()) * Math.random() * sign,
-                position.y + (5 + Math.random()) * Math.random(),
+                position.x + (3 + Math.random()) * Math.random() * sign,
+                position.y + (3 + Math.random()) * Math.random(),
                 position.z
             );
         }
 
         this.geometry = new BufferGeometry();
         this.geometry.setAttribute('position', new Float32BufferAttribute(this.initialVectors, 3));
-        const material = new PointsMaterial({ color: 0xff88ff });
+        
+        const material = new PointsMaterial({ color: 0xff2414, size: .5 });
         this.points = new Points(this.geometry, material);
         this.scene.add(this.points);
     }
 
     // TODO update to automatically pass the delta
     update() {
-        const delta = 0.0187
+        const delta = this.experience.time.clockDelta;
         if (this.effectDuration > 0) {
             const position = this.geometry.getAttribute('position') as Float32BufferAttribute;
             const vertices = position.array as number[];
@@ -65,7 +66,7 @@ export class HitParticleSystem extends Component {
             }
             
             position.needsUpdate = true;
-            this.effectDuration -= delta;
+            this.effectDuration -= delta ;
         }
         else {
             const parent = this.getParent();

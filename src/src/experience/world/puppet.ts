@@ -53,7 +53,7 @@ export class Puppet extends Entity {
         // TODO we should extend Object3D
         const position = this.model.position;
 
-        const ps = new HitParticleSystem(position, 30, 3);
+        const ps = new HitParticleSystem(position, 30, .5);
         this.registerComponent(ps);
 
         // if (this.hitEffect == null) {
