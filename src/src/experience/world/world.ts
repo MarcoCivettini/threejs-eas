@@ -39,7 +39,7 @@ export default class World {
             new Wall(new Vector3(-2, 0.5, -2));
             new Wall(new Vector3(2, 0.5, 2));
             // new Puppet(new Vector3(0, -0.5, 9), 'Puppet1');
-           const puppet =  new Puppet(new Vector3(0, 0, -2), 'Puppet2');
+           const puppet =  new Puppet(new Vector3(0, 0.5, -2), 'Puppet2');
             this.aiMovementLogic = new AiMovementLogic(puppet.model.uuid);
 
 

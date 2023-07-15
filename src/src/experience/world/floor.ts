@@ -36,7 +36,7 @@ export default class Floor {
 
     createPhysicsWorld() {
 
-        const mesh: Mesh = this.model.children[0];
+        const mesh: Mesh = this.model.children[54];
         mesh.receiveShadow = true;
         // console.log('mesh', this.model);
         // const terrainShape = new CANNON.Trimesh.createMeshShape(this.model.children[0].geometry);
@@ -67,8 +67,6 @@ export default class Floor {
 
         body.position.x = -15
         body.position.z = 15
-
-
 
         body.addShape(shape);
         this.physicsWord.world.addBody(body);
@@ -120,7 +118,7 @@ export default class Floor {
                 const intersects = raycaster.intersectObject(mesh, false);
 
                 if (intersects.length > 0) {
-                    matrix[x + dimension][-z + dimension] = (intersects[0].point.y * yScale) + 5.85;
+                    matrix[x + dimension][-z + dimension] = (intersects[0].point.y * yScale);
                 } else {
                     matrix[x + dimension][-z + dimension] = 0;
                 }

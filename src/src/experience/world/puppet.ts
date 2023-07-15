@@ -15,8 +15,6 @@ export class Puppet extends Entity {
     isAttackable = true;
     name: string;
 
-    // hitEffect: HitParticleSystem;
-
     private experience: Experience = new Experience();
     private scene: Scene = this.experience.scene;
     private entityManager: EntityManager;
@@ -55,11 +53,6 @@ export class Puppet extends Entity {
 
         const ps = new HitParticleSystem(position, 30, .5);
         this.registerComponent(ps);
-
-        // if (this.hitEffect == null) {
-        //     this.hitEffect = new HitParticleSystem(30, 3);
-        //     this.registerComponent(this.hitEffect);
-        // }
     }
 
     onDeath(): void {

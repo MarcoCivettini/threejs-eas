@@ -9,7 +9,7 @@
     docker run --rm -it -p 3000:3000 -v ${PWD}/:/app <dev-env name> ash
     ```
 
-    As an example, `docker run --rm -it -p 3000:3000 -v ${PWD}:/app/ swordgen_dev ash`
+    As an example, `docker run --rm -it -p 3000:3000 -v ${PWD}:/app/ threejseas_dev ash`
 
 
 ## Development without docker

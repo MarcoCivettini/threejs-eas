@@ -34,7 +34,8 @@ export default[
     {
         name: 'floorModel',
         type: 'gltfModel',
-        path: '/models/MapTutorial.glb'
+        //path: '/models/MapTutorial.glb'
+        path: '/models/MapTutorial_v2.glb'
     },
     {
         name: 'playerModel',
