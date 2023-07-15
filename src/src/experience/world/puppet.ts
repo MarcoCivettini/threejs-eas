@@ -48,7 +48,6 @@ export class Puppet extends Entity {
         const healthComponent = this.getComponent(healthComponentName) as HealthComponent;
         healthComponent.takeDamage(1);
 
-        // TODO we should extend Object3D
         const position = this.model.position;
 
         const ps = new HitParticleSystem(position, 30, .5);
