@@ -70,7 +70,7 @@ export default class Player extends Entity {
         bone.remove(bone.children[1]);
         bone.remove(bone.children[0]);
 
-        weapon.rotateY(Math.PI / 2);
+        weapon.rotateY(-Math.PI / 2);
 
         bone.add(weapon)
     }

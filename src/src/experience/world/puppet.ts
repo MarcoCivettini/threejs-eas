@@ -8,6 +8,7 @@ import { Entity } from "../models/entity";
 import { healthComponentName } from "../constants/components";
 import { ChartacterController } from "./character-controller";
 import { AiInputController } from "./ai-input-controller";
+import { HitParticleSystem } from "../particle-systems/hit";
 
 export class Puppet extends Entity {
     model: Mesh;
@@ -46,6 +47,11 @@ export class Puppet extends Entity {
     onHit(): void {
         const healthComponent = this.getComponent(healthComponentName) as HealthComponent;
         healthComponent.takeDamage(1);
+
+        const position = this.model.position;
+
+        const ps = new HitParticleSystem(position, 30, .5);
+        this.registerComponent(ps);
     }
 
     onDeath(): void {
