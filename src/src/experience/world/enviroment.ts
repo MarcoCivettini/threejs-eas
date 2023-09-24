@@ -1,10 +1,11 @@
-import { DirectionalLight, sRGBEncoding, Mesh, MeshStandardMaterial } from "three";
+import { DirectionalLight, sRGBEncoding, Mesh, MeshStandardMaterial, AmbientLight } from "three";
 import {Experience} from "../experience";
+import Resources from "../utils/resources";
 
 export default class Environment {
     experience: Experience;
     scene: any;
-    resources: any;
+    resources: Resources;
     debug: any;
     debugFolder: any;
     sunLight: DirectionalLight;
@@ -23,6 +24,8 @@ export default class Environment {
         // set sunlight
         this.sunLight = new DirectionalLight('#ffffff', 4)
         this.setSunLightOptions();
+        const ambientLight = new AmbientLight('#ffffff', 0.5);
+        this.scene.add(ambientLight);
 
 
         this.setEnviromentMap();
@@ -73,6 +76,8 @@ export default class Environment {
         this.environmentMap.intensity = .4
         this.environmentMap.texture = this.resources.items.environmentMapTexture
         this.environmentMap.texture.encoding = sRGBEncoding
+
+        this.scene.background = this.environmentMap.texture;
 
         this.scene.environment = this.environmentMap.texture
 
