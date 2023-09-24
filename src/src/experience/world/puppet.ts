@@ -27,7 +27,7 @@ export class Puppet extends Entity {
 
         this.model = this.createWall(new Vector3(0.5, 1, 0.5), position);
         this.physicsBody = this.createPhysicsBody(this.model);
-        this.physicsBody.velocity.x = 1;
+        this.physicsBody.velocity.x = 0;
         
         this.physicsWorld.addBody(this.physicsBody, this.model, this)
         this.scene.add(this.model);
@@ -74,6 +74,8 @@ export class Puppet extends Entity {
         const body = new CANNON.Body({
             mass: 0,
             shape,
+            allowSleep: false,
+            // collisionResponse: true,
             material: this.physicsWorld.world.defaultMaterial
         })
         body.position.copy(mesh.position);

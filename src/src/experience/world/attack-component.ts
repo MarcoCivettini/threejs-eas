@@ -5,13 +5,18 @@ import { EventHandler } from '../utils/event-handler';
 import { getAngleRadFromQuaternion } from '../utils/angle';
 import { Experience } from '../experience';
 import { AnimationComponent } from './animation-component';
+import * as CANNON from 'cannon-es';
 
 
 export class AttackComponent extends Component {
     private experience = new Experience();
+    private physicsWord = this.experience.physicsWold;
+
     private scene = this.experience.scene;
     private entityManager = this.experience.entityManager;
     private attackAnimationName?: string;
+
+    private attackRange = this.createPhysicsAttackRange();
 
     constructor() {
         super(AttackComponentName)
@@ -44,6 +49,30 @@ export class AttackComponent extends Component {
         this.hitAttackableEntities(intersects);
     }
 
+    update(): void {
+        const parent = this.getParent() as any;
+        if(parent){
+        const parentRotationAngle = this.getPrentVisualAngle(parent)
+        const positoin = new CANNON.Vec3().copy(parent.physicsBody.position)
+        const swordbone = parent.getSwordBone();
+
+    
+        positoin.x += parentRotationAngle.x
+
+        positoin.z += parentRotationAngle.z
+        // positoin.y += swordbone.position.y;
+        // positoin.x -= 0.5;
+        // positoin.z -= 0.5;
+            // positoin.z += swordbone.position.z;
+            // positoin.x += swordbone.position.x;
+// console.log(swordbone.position.z);
+        const rotation = new CANNON.Quaternion();
+        rotation.copy(swordbone.quaternion);
+        this.attackRange.position.copy(positoin as any);
+        this.attackRange.quaternion.copy(rotation as any);
+    }
+    }
+
     private hitAttackableEntities(intersections: Intersection[]): void {
         const attackableEntityIntersected = this.entityManager.entities.filter(e =>
             intersections.find(x => e.mesh.uuid === x.object.uuid && e.instance?.isAttackable)
@@ -70,6 +99,34 @@ export class AttackComponent extends Component {
         raycaster.set(parent.model.position, parentRotationAngle);
         raycaster.far = far;
         return raycaster;
+    }
+
+
+    private createPhysicsAttackRange(): CANNON.Body {
+        const shape = new CANNON.Box(new CANNON.Vec3(0.95, 0.05, 0.05));
+        // const shape = new CANNON.Box(new CANNON.Vec3(1.5, 0, 1.5));
+        var groundBody = new CANNON.Body({
+            mass: 0, // Plane is static, so mass is zero
+            allowSleep: false,
+            collisionResponse: false,
+            shape: shape
+        });
+
+        groundBody.position.set(0, 0.7, 0); // Set the position of the plane
+        groundBody.addEventListener('collide', (e: any) => {
+            // if(e.body.id !== this.physicsBody.id){
+
+            console.log('ciao', e)
+            // }
+            // console.log('player', this.physicsBody);
+        }
+        );
+
+
+
+
+        this.physicsWord.world.addBody(groundBody);
+        return groundBody;
     }
 
 }

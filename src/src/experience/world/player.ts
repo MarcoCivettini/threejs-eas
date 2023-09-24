@@ -1,6 +1,6 @@
 import { Experience } from '../experience';
 import * as CANNON from 'cannon-es';
-import { Vector3, Mesh, Group } from 'three';
+import { Vector3, Mesh, Group, Object3D } from 'three';
 import PhysicsWorld from './physics-word';
 import { Entity } from '../models/entity';
 import { AttackComponent } from './attack-component';
@@ -34,7 +34,6 @@ export default class Player extends Entity {
         armature.position.y -= 1.5;
 
         this.physicsBody = this.createPhysicsBody(this.model);
-        this.physicsBody.velocity.x = 1;
 
         // this.healtComponent = new HealthComponent(3);
         // this.healtComponent.setParent(this);
@@ -56,11 +55,20 @@ export default class Player extends Entity {
         const animationComponent = new AnimationComponent();
         this.registerComponent(animationComponent);
         animationComponent.registerAnimation('attack1', this.playerResource.animations[0]);
-
     }
 
     update(): void {
         super.update();
+
+
+        // this.attackRange.quaternion.copy(this.physicsBody.quaternion);
+        // const position = new CANNON.Vec3().copy(this.physicsBody.position);
+        // position.z -= 3;
+        // this.attackRange.position.copy(position);
+    }
+
+    getSwordBone(): Object3D {
+        return this.model.children[0].children[0].children[0].children[0] as Object3D;
     }
 
     attachWeapon(weapon: Group): void {
@@ -100,6 +108,9 @@ export default class Player extends Entity {
         body.position.copy(mesh.position as any);
         return body;
     }
+
+
+
 }
 
 
