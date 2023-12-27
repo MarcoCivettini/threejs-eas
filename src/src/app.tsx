@@ -1,11 +1,14 @@
 import { useEffect } from 'preact/hooks'
-import './app.css'
 import { initThreejsApp } from './threejs-app';
+import { useColyeusClient } from './hooks/connector';
+import './app.css'
 
 export function App() {
 
+  const client = useColyeusClient('ws://localhost:5000');
+
   useEffect(() => {
-    initThreejsApp('game-canvas');
+    initThreejsApp('game-canvas', client);
   }, []);
 
   return (

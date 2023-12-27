@@ -1,7 +1,8 @@
 import express from 'express';
 import { createServer } from 'node:http';
-import gameServer from '../utils/socket';
-import { AppRequest } from '../utils/custom-types';
+import gameServer from './utils/socket';
+import { AppRequest } from './utils/custom-types';
+import { initializeGameRooms } from './rooms/rooms-initializer';
 
 const app = express();
 
@@ -10,6 +11,8 @@ app.use(express.json());
 const httpServer = createServer(app);
 
 const gs = gameServer(httpServer);
+
+initializeGameRooms(gs);
 
 // req.gameServer accessibile con cast tramite AppRequest
 app.use('gameServer', (req, res, next) => {

@@ -2,6 +2,7 @@
 // import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 // import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import {Experience} from './experience/experience';
+import { Client } from 'colyseus.js';
 
 
 // let scene: Scene;
@@ -11,7 +12,7 @@ import {Experience} from './experience/experience';
 // let animationMixer: AnimationMixer;
 // let animationAction: AnimationAction;
 
-export const initThreejsApp = (canvasId: string): void => {
+export const initThreejsApp = (canvasId: string, gameClient: Client): void => {
     const canvas = document.getElementById(canvasId);
     if(canvas){
     const experience = new Experience(canvas)
