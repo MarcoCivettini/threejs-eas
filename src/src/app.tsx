@@ -2,6 +2,7 @@ import { useEffect } from 'preact/hooks'
 import { initThreejsApp } from './threejs-app';
 import { useColyeusClient } from './hooks/connector';
 import './app.css'
+import { Chat } from './components/chat';
 
 export function App() {
 
@@ -13,7 +14,10 @@ export function App() {
 
   return (
     <>
-      <canvas id='game-canvas'></canvas>
+      <div className="h-full w-100 relative">
+        <canvas id='game-canvas'></canvas>
+        <Chat />
+      </div>
     </>
   )
 }
