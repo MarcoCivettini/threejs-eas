@@ -1,7 +1,7 @@
-FROM alpine:3
+FROM node:20-alpine
 RUN apk update
 
 # TOOLS
-RUN apk add nodejs npm git
+RUN apk add git
 
 WORKDIR /app/src

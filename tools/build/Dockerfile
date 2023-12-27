@@ -1,8 +1,5 @@
-FROM alpine:3 as build
+FROM node:20-alpine as build
 RUN apk update
-
-# TOOLS
-RUN apk add nodejs npm
 
 # GET CODE
 WORKDIR /app
