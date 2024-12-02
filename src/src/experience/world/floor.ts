@@ -1,4 +1,4 @@
-import {Experience} from "../experience";
+import { Experience } from "../experience";
 import * as CANNON from 'cannon-es';
 import { Mesh, Raycaster, Vector3 } from "three";
 import PhysicsWorld from "./physics-word";
@@ -35,28 +35,12 @@ export default class Floor {
     }
 
     createPhysicsWorld() {
-
         const mesh: Mesh = this.model.children[54];
         mesh.receiveShadow = true;
-        // console.log('mesh', this.model);
-        // const terrainShape = new CANNON.Trimesh.createMeshShape(this.model.children[0].geometry);
-
-        // const simplifyModifier = new SimplifyModifier();
-        // const simplifiedGeometry = simplifyModifier.modify(mesh.geometry, 1);
-        // console.log(mesh?.geometry?.index?.array.length);
         const shape = this.createShapeFromGeometry(mesh);
-        // this.createShapeFromGeometry1(this.model.children[2]);
-        // for(let i = 1; i < this.model.children.length; i++){
-        //     this.terrainObjectToShape(this.model.children[i]);
-
-        // }
-
-        // this.terrainObjectToShape(this.model.children[4]);
 
         const body = new CANNON.Body({
             mass: 0,
-            // shape,
-            // material: this.physicsWord.world.defaultMaterial
         });
 
 
@@ -84,9 +68,10 @@ export default class Floor {
             geometry = mesh.children[0].geometry;
         }
 
-        if(geometry == null){
+        if (geometry == null) {
             console.log('errore', mesh);
-            return;}
+            return;
+        }
         // console.log('pos', geometry)
         // console.log('normal', geometry.attributes.normal.array[0])
         const shape = this.createShapeFromGeometry(mesh)
@@ -129,40 +114,6 @@ export default class Floor {
 
         return terrainShape;
     }
-
-    createShapeFromGeometry1(geometry: any) {
-                // const simplifyModifier = new SimplifyModifier();
-        // const simplifiedGeometry = simplifyModifier.modify(mesh.geometry, 1);
-
-        // Get the vertices and indices of the geometry
-        const positions = geometry.attributes.position.array;
-        // console.log('pos', geometry.attributes.position.array[0])
-        // console.log('normal', geometry.attributes.normal.array[0])
-
-        const indices = geometry.index.array;
-
-        // Convert the positions and indices to cannon-es vectors and arrays
-        const vertices = [];
-        const scale = 15;
-        for (let i = 0; i < positions.length; i += 3) {
-            const vertex = new CANNON.Vec3(positions[i], positions[i + 1], positions[i + 2]);
-            vertices.push(vertex);
-        }
-        const faces = [];
-        for (let i = 0; i < indices.length; i += 3) {
-            const face = [indices[i], indices[i + 1], indices[i + 2]];
-            faces.push(face);
-        }
-
-        // console.log(vertices, faces);
-
-
-        // Create a CANNON.ConvexPolyhedron shape from the vertices and faces
-        const shape = new CANNON.ConvexPolyhedron({ vertices: vertices, faces: faces });
-
-        return shape;
-    }
-
 
 
 }
